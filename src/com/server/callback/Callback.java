@@ -13,29 +13,52 @@ import java.util.HashMap;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This Callback Class will handler the callback
+ * requests from clients for monitoring certain files
+ *
  */
 public class Callback {
 
-    private HashMap<String, ArrayList<Busybody>> aGroupOfKepos;
+    private HashMap<String, ArrayList<Busybody>> aGroupOfBusybodies;
     private String folder;
+
+    /**
+     * Class Constructor of Callback Class
+     * @param folder        Folder containing the files
+     */
     public Callback(String folder) {
-        aGroupOfKepos = new HashMap<>();
+        aGroupOfBusybodies = new HashMap<>();
         this.folder = folder;
     }
 
+    /**
+     * Register clients into the list of callback and record the
+     * monitor interval for each client who registered
+     * @param filename      Name of the file who wished to monitor
+     * @param interval      Length of time to monitor a certain file, in seconds
+     * @param id            ID
+     * @param address       IP Address of client
+     * @param port          Port used for communication between server and client
+     */
     public void register(String filename, int interval, long id, InetAddress address, int port){
         long expiry = System.currentTimeMillis() + interval * 1000;
-        Busybody busybody = new Busybody(address, port, id, expiry);
-        if (!aGroupOfKepos.containsKey(filename)){
-            aGroupOfKepos.put(filename, new ArrayList<Busybody>());
+        Busybody busybody = new Busybody(address, port, id, expiry);            /* Initialize the busybody object */
+        if (!aGroupOfBusybodies.containsKey(filename)){                         /* If the files is not being monitored before*/
+            aGroupOfBusybodies.put(filename, new ArrayList<Busybody>());        /* Initialize an arraylist for clients who wish to monitor */
         }
-        ArrayList<Busybody> busybodies = aGroupOfKepos.get(filename);
+        ArrayList<Busybody> busybodies = aGroupOfBusybodies.get(filename);
         busybodies.add(busybody);
     }
 
+    /**
+     *
+     * @param filename
+     * @param socket
+     * @throws IOException
+     */
     public void inform(String filename, Socket socket) throws IOException{
         long currentTime = System.currentTimeMillis();
-        ArrayList<Busybody> busybodies = aGroupOfKepos.get(filename);
+        ArrayList<Busybody> busybodies = aGroupOfBusybodies.get(filename);
         if (busybodies != null){
             byte[] data = Files.readAllBytes(Paths.get(folder, filename));
 

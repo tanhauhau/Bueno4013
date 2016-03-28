@@ -29,7 +29,7 @@ public abstract class Strategy {
      * Initialize the object unpack which will be using for unmarshalling messages
      * from client
      *
-     * @param unpack
+     * @param unpack Unmarshalling object
      */
 
     protected Strategy(Unpack unpack){
@@ -40,17 +40,49 @@ public abstract class Strategy {
                         .include(unpack);
     }
 
+    /**
+     * Abstract method for daughter classes to implement
+     *
+     * @param request request from client
+     * @return
+     * @throws IOException
+     */
     protected abstract byte[] handle(Request request) throws IOException;
 
-
+    /**
+     * Return the hashmap containing the component of the byte array
+     * after parsing
+     *
+     * @param data bytearray for UDP communication
+     * @return hashmap
+     */
     public Unpack.Result unpack(byte[] data){
         return unpack.parseByteArray(data);
     }
 
+    /**
+     * Return handle object
+     *
+     * @param senderAddress Sender's IP address
+     * @param senderPort    Sender's IP Port
+     * @param socket        socket used
+     * @param data          byte array from communication
+     * @return request
+     * @throws IOException
+     */
     public byte[] handle(InetAddress senderAddress, int senderPort, Socket socket, Unpack.Result data) throws IOException{
         return handle(new Request(senderAddress, senderPort, data, socket));
     }
 
+    /**
+     * Return initialized Object Pack
+     *
+     * @param requestID     Request ID
+     * @param status        Request ID status
+     * @param data          Byte Array from communication
+     * @return Pack object
+     * @throws IOException
+     */
     protected byte[] reply(long requestID, int status, byte[] data) throws IOException {
         return new Pack.Builder()
                 .setValue("status", new OneByteInt(status))
@@ -59,12 +91,34 @@ public abstract class Strategy {
                 .build()
                 .getByteArray();
     }
+
+    /**
+     * Return Object Pack which contain the error message
+     *
+     * @param requestID     Request ID
+     * @param errorMessage  Error message
+     * @return Pack Object
+     * @throws IOException
+     */
+
     protected byte[] replyError(long requestID, String errorMessage) throws IOException {
         return reply(requestID, 1, errorMessage.getBytes());
     }
+
+    /**
+     * Return Object Pack which contain the success message
+     * The following 3 methods are doing the exact similar function, but with different
+     * parameter
+     *
+     * @param requestID     Request ID
+     * @param replyMessage  Reply Message
+     * @return Pack Object
+     * @throws IOException
+     */
     protected byte[] replySuccess(long requestID, String replyMessage) throws IOException {
         return reply(requestID, 0, replyMessage.getBytes());
     }
+
     protected byte[] replySuccess(long requestID, byte[] data) throws IOException {
         return reply(requestID, 0, data);
     }
@@ -76,6 +130,14 @@ public abstract class Strategy {
                 .include(pack)
                 .getByteArray();
     }
+
+    /**
+     * Check that is there any Null object
+     *
+     * @param check     Object in paramater
+     * @return boolean
+     * @throws IOException
+     */
     protected boolean ifAnyNull(Object... check) throws IOException{
         for (Object c : check) {
             if (c == null) {
@@ -85,6 +147,11 @@ public abstract class Strategy {
         return false;
     }
 
+    /**
+     * This is the Request class, which in charge of
+     * initializing request ID and request ID handling
+     */
+
      protected class Request{
         private InetAddress mAddress;
         private int mPort;
@@ -93,6 +160,14 @@ public abstract class Strategy {
         private long mRequestID;
         private int mRequestType;
 
+        /**
+         * Class Constructor for Request
+         *
+         * @param mAddress  IP address
+         * @param mPort     Port
+         * @param mData     Byte Array Data
+         * @param socket    Socket type
+         */
         public Request(InetAddress mAddress, int mPort, Unpack.Result mData, Socket socket) {
             this.mAddress = mAddress;
             this.mPort = mPort;
@@ -101,21 +176,19 @@ public abstract class Strategy {
             this.mRequestType = this.mData.getOneByteInt(REQUEST_TYPE).getValue();
             this.mRequestID = this.mData.getLong(REQUEST_ID);
         }
+
         public long getRequestID() {
             return mRequestID;
         }
         public int getRequestType() {
             return mRequestType;
         }
-
         public int getPort() {
              return mPort;
          }
-
         public InetAddress getAddress() {
              return mAddress;
          }
-
         public Socket getSocket() {
             return mSocket;
         }

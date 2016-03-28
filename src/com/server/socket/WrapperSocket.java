@@ -6,6 +6,10 @@ import java.net.InetAddress;
 
 /**
  * Created by lhtan on 24/3/16.
+ * This WrapperSocket class act as a pre-initialized
+ * class. Daughter class who inherited this class
+ * will have to override certain functions which it
+ * required
  */
 public class WrapperSocket implements Socket {
 
