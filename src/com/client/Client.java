@@ -61,8 +61,8 @@ public class Client {
      * @return
      * @throws SocketException
      */
-    public Client makeItNoobInSending(double prob) throws SocketException{
-        this.mSocket = new NoobSendSocket(this.mSocket, prob);
+    public Client makeItPacketLossWhenSending(double prob) throws SocketException{
+        this.mSocket = new LossSendSocket(this.mSocket, prob);
         return this;
     }
     /**
@@ -71,8 +71,8 @@ public class Client {
      * @return
      * @throws SocketException
      */
-    public Client makeItNoobInReceiving(double prob) throws SocketException{
-        this.mSocket = new NoobReceiveSocket(this.mSocket, prob);
+    public Client makeItPacketLossWhenReceiving(double prob) throws SocketException{
+        this.mSocket = new LossReceiveSocket(this.mSocket, prob);
         return this;
     }
     /**
@@ -89,8 +89,8 @@ public class Client {
      * @return
      * @throws SocketException
      */
-    public Client makeItKisiao(double prob) throws SocketException{
-        this.mSocket = new KisiaoSocket(this.mSocket, prob);
+    public Client makeItSendGibberish(double prob) throws SocketException{
+        this.mSocket = new GibberishSocket(this.mSocket, prob);
         return this;
     }
 

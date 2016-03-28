@@ -4,44 +4,31 @@ import com.Console;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
 import java.util.Random;
 
 /**
  * Created by lhtan on 23/3/16.
  */
-public class NoobSocket extends NormalSocket {
+public class LossReceiveSocket extends WrapperSocket {
     private final Random random;
-    public NoobSocket(DatagramSocket socket) {
+    private final double prob;
+    public LossReceiveSocket(Socket socket, double probability) {
         super(socket);
-        random = new Random();
-    }
-
-    @Override
-    public void send(DatagramPacket p) throws IOException {
-        //5% of packet loss, simulating at most once
-        if (random.nextInt(20) < 19){
-            super.send(p);
-        }else{
-            //sleep for a while, or else too fast
-            try {
-                Thread.sleep(1000);
-                Console.info(" NoobSocket >> Fake Packet Loss when sending");
-            } catch (InterruptedException e) {
-            }
-        }
+        this.random = new Random();
+        this.prob = probability;
     }
 
     @Override
     public void receive(DatagramPacket p) throws IOException, SocketTimeoutException {
         //5% of packet loss, simulating at most once
-        if (random.nextInt(20) < 19){
+        if (random.nextDouble() < this.prob){
             super.receive(p);
         }else{
             //sleep for a while, or else too fast
             try {
                 Thread.sleep(1000);
+                Console.info("  LossReceiveSocket >> Fake Packet Loss when receiving");
             } catch (InterruptedException e) {
             }
             throw new SocketTimeoutException();

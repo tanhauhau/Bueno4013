@@ -14,14 +14,18 @@ public class Console {
         this.scanner = scanner;
     }
 
-    public int askForInteger(String question){
-        System.out.println(question);
+    public int askForInteger(){
         while(true) {
             try {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
             }
         }
+    }
+
+    public int askForInteger(String question){
+        System.out.println(question);
+        return askForInteger();
     }
     public String askForString(String question){
         System.out.println(question);
