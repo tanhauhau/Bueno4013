@@ -10,6 +10,10 @@ import com.server.strategy.*;
  */
 public class Main {
 
+    /**
+     * Cibai u see this ornot? --lihau
+     * @param args
+     */
     public static void main(String[] args) {
         String folder = "/Users/lhtan/IdeaProjects/Server/data";
         Server server = null;
@@ -31,7 +35,7 @@ public class Main {
 
             server.start();
         }catch (Exception e){
-            System.out.println("Fuck why server got error!!! CiBaI");
+            System.out.println("Server error");
             e.printStackTrace();
         }finally {
             if (server != null){
