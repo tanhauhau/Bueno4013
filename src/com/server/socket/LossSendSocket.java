@@ -8,10 +8,10 @@ import java.util.Random;
 /**
  * Created by lhtan on 23/3/16.
  */
-public class NoobSendSocket extends WrapperSocket {
+public class LossSendSocket extends WrapperSocket {
     private final Random random;
     private final double prob;
-    public NoobSendSocket(Socket socket, double probability) {
+    public LossSendSocket(Socket socket, double probability) {
         super(socket);
         this.random = new Random();
         this.prob = probability;
@@ -25,7 +25,7 @@ public class NoobSendSocket extends WrapperSocket {
             //sleep for a while, or else too fast
             try {
                 Thread.sleep(1000);
-                System.out.println("  NoobSendSocket >> Fake Packet Loss when sending");
+                System.out.println("  LossSendSocket >> Fake Packet Loss when sending");
             } catch (InterruptedException e) {
             }
         }
@@ -39,7 +39,7 @@ public class NoobSendSocket extends WrapperSocket {
             //sleep for a while, or else too fast
             try {
                 Thread.sleep(1000);
-                System.out.println("  NoobSendSocket >> Fake Packet Loss when sending");
+                System.out.println("  LossSendSocket >> Fake Packet Loss when sending");
             } catch (InterruptedException e) {
             }
         }

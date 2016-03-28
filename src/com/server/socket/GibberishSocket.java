@@ -8,11 +8,11 @@ import java.util.Random;
 /**
  * Created by lhtan on 24/3/16.
  */
-public class KisiaoSocket extends WrapperSocket {
+public class GibberishSocket extends WrapperSocket {
     private final Random random;
     private final double prob;
 
-    public KisiaoSocket(Socket socket, double probability) {
+    public GibberishSocket(Socket socket, double probability) {
         super(socket);
         this.random = new Random();
         this.prob = probability;

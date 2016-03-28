@@ -38,7 +38,7 @@ public class LagSocket extends WrapperSocket {
 
     private void lag(){
         try {
-            Thread.sleep(this.time);
+            Thread.sleep(this.time * 1000);
         } catch (InterruptedException e) {
         }
     }
