@@ -13,6 +13,7 @@ public class Main {
 
     /**
      * Cibai u see this ornot? --lihau
+     * putang ina mo bobo!!!!!!!!
      * @param args
      */
     public static void main(String[] args) {
