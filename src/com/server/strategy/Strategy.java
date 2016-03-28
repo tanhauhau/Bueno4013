@@ -10,13 +10,27 @@ import java.net.InetAddress;
 
 /**
  * Created by lhtan on 22/3/16.
+ * This Class is an abstract class for all the daughter strategy classes
+ * Methods implemented can be used by daughter classes, or overrided
+ * Few methods are not implemented and mandatory to be implemented
+ * by daughter classes
  */
+
 public abstract class Strategy {
 
     protected final Unpack unpack;
 
     protected static final String REQUEST_TYPE = "request";
     public static final String REQUEST_ID = "id";
+
+    /**
+     * Class Constructer for Strategy
+     *
+     * Initialize the object unpack which will be using for unmarshalling messages
+     * from client
+     *
+     * @param unpack
+     */
 
     protected Strategy(Unpack unpack){
         this.unpack = new Unpack.Builder()
