@@ -28,7 +28,7 @@ public class PingStrategy extends Strategy {
      * back to client, such that the server received the
      * content and resend back as a ping
      *
-     * @param request
+     * @param request       Request from Client
      * @return
      * @throws IOException
      */

@@ -29,7 +29,7 @@ public abstract class Strategy {
      * Initialize the object unpack which will be using for unmarshalling messages
      * from client
      *
-     * @param unpack
+     * @param unpack Unmarshalling object
      */
 
     protected Strategy(Unpack unpack){
@@ -43,7 +43,7 @@ public abstract class Strategy {
     /**
      * Abstract method for daughter classes to implement
      *
-     * @param request
+     * @param request request from client
      * @return
      * @throws IOException
      */
@@ -53,7 +53,7 @@ public abstract class Strategy {
      * Return the hashmap containing the component of the byte array
      * after parsing
      *
-     * @param data
+     * @param data bytearray for UDP communication
      * @return hashmap
      */
     public Unpack.Result unpack(byte[] data){
@@ -63,10 +63,10 @@ public abstract class Strategy {
     /**
      * Return handle object
      *
-     * @param senderAddress
-     * @param senderPort
-     * @param socket
-     * @param data
+     * @param senderAddress Sender's IP address
+     * @param senderPort    Sender's IP Port
+     * @param socket        socket used
+     * @param data          byte array from communication
      * @return request
      * @throws IOException
      */
@@ -77,9 +77,9 @@ public abstract class Strategy {
     /**
      * Return initialized Object Pack
      *
-     * @param requestID
-     * @param status
-     * @param data
+     * @param requestID     Request ID
+     * @param status        Request ID status
+     * @param data          Byte Array from communication
      * @return Pack object
      * @throws IOException
      */
@@ -95,8 +95,8 @@ public abstract class Strategy {
     /**
      * Return Object Pack which contain the error message
      *
-     * @param requestID
-     * @param errorMessage
+     * @param requestID     Request ID
+     * @param errorMessage  Error message
      * @return Pack Object
      * @throws IOException
      */
@@ -110,8 +110,8 @@ public abstract class Strategy {
      * The following 3 methods are doing the exact similar function, but with different
      * parameter
      *
-     * @param requestID
-     * @param replyMessage
+     * @param requestID     Request ID
+     * @param replyMessage  Reply Message
      * @return Pack Object
      * @throws IOException
      */
@@ -134,7 +134,7 @@ public abstract class Strategy {
     /**
      * Check that is there any Null object
      *
-     * @param check
+     * @param check     Object in paramater
      * @return boolean
      * @throws IOException
      */
@@ -163,10 +163,10 @@ public abstract class Strategy {
         /**
          * Class Constructor for Request
          *
-         * @param mAddress
-         * @param mPort
-         * @param mData
-         * @param socket
+         * @param mAddress  IP address
+         * @param mPort     Port
+         * @param mData     Byte Array Data
+         * @param socket    Socket type
          */
         public Request(InetAddress mAddress, int mPort, Unpack.Result mData, Socket socket) {
             this.mAddress = mAddress;

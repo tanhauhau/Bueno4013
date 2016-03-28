@@ -20,7 +20,7 @@ public class SizeStrategy extends Strategy {
 
     /**
      * Class Constructer of SizeStrategy
-     * @param folder
+     * @param folder    folder containing files
      */
 
     public SizeStrategy(String folder) {
@@ -35,7 +35,7 @@ public class SizeStrategy extends Strategy {
      * This method will return the size of the file asked
      * otherwise error message is returned
      *
-     * @param request
+     * @param request   Request object from client
      * @return
      * @throws IOException
      */

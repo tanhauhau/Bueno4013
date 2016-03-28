@@ -24,8 +24,8 @@ public class DoubleStrategy extends Strategy {
 
     /**
      * Class Constructor for DoubleStrategy
-     * @param folder
-     * @param callback
+     * @param folder        Folder containing files
+     * @param callback      List of callback that contain registered clients
      */
     public DoubleStrategy(String folder, Callback callback) {
         super(new Unpack.Builder()
@@ -39,7 +39,7 @@ public class DoubleStrategy extends Strategy {
      * Handle method inherited from Parent Strategy Class
      * The handler will duplicate the entire content of the file once,
      * hence resulting in doubling the filesize of the file
-     * @param request
+     * @param request       Request from Client
      * @return
      * @throws IOException
      */

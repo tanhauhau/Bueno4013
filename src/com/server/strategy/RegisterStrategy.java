@@ -24,8 +24,8 @@ public class RegisterStrategy extends Strategy {
     /**
      * Class Constructor for RegisterStrategy
      *
-     * @param folder
-     * @param callback
+     * @param folder        Folder containing files
+     * @param callback      List of callback that contain registered clients
      */
     public RegisterStrategy(String folder, Callback callback) {
         super(new Unpack.Builder()
@@ -41,7 +41,7 @@ public class RegisterStrategy extends Strategy {
      * This method will register client who requested into callback
      * and also update clients if there is any changes on the certain file
      *
-     * @param request
+     * @param request       Request from client
      * @return
      * @throws IOException
      */

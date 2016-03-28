@@ -20,7 +20,7 @@ public class LastModifiedStrategy extends Strategy {
 
     /**
      * Class Constructor for LastModifiedStrategy class
-     * @param folder
+     * @param folder        Folder containing files
      */
     public LastModifiedStrategy(String folder) {
         super(new Unpack.Builder()
@@ -33,7 +33,7 @@ public class LastModifiedStrategy extends Strategy {
      * Handle method inherited by the Parent Strategy Class
      * Return the timestamp of the requested file last modified
      *
-     * @param request
+     * @param request       Request from Client
      * @return
      * @throws IOException
      */

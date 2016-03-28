@@ -26,8 +26,8 @@ public class WritingStrategy extends Strategy {
     /**
      * Class Constructor for WritingStrategy
      *
-     * @param folder
-     * @param callback
+     * @param folder folder containing the files
+     * @param callback callback list which contain list of registered client
      */
 
     public WritingStrategy(String folder, Callback callback) {
@@ -47,7 +47,7 @@ public class WritingStrategy extends Strategy {
      * Find the file (if available) and write the content into it
      * otherwise error message is returned
      *
-     * @param request
+     * @param request Request object from client
      * @return result message
      * @throws IOException
      */

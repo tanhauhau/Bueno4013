@@ -21,7 +21,7 @@ public class ReadingStrategy extends Strategy {
 
     /**
      * Class Constructor of ReadingStrategy
-     * @param folder
+     * @param folder        Folder containing files
      */
     public ReadingStrategy(String folder) {
         super(new Unpack.Builder()
@@ -38,7 +38,7 @@ public class ReadingStrategy extends Strategy {
      * client wish to read, otherwise error message will
      * be returned
      *
-     * @param request
+     * @param request       Request from Client
      * @return
      * @throws IOException
      */
