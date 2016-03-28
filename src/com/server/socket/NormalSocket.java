@@ -9,9 +9,9 @@ import java.util.Date;
 /**
  * Created by lhtan on 22/3/16.
  */
-public class BoboSocket implements Socket {
+public class NormalSocket implements Socket {
     private DatagramSocket socket;
-    public BoboSocket(DatagramSocket socket){
+    public NormalSocket(DatagramSocket socket){
         this.socket = socket;
     }
     public void send(byte[] data, InetAddress address, int port) throws IOException {

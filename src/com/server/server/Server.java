@@ -31,7 +31,7 @@ public class Server {
 
     public Server(int serverPort) throws SocketException {
         this.mServerPort = serverPort;
-        this.mSocket = new BoboSocket(new DatagramSocket(this.mServerPort));
+        this.mSocket = new NormalSocket(new DatagramSocket(this.mServerPort));
         this.strategy = new HashMap<>();
         this.errorStrategy = new ErrorStrategy();
     }
@@ -47,8 +47,8 @@ public class Server {
      * @return
      * @throws SocketException
      */
-    public Server makeItNoobInSending(double prob) throws SocketException{
-        this.mSocket = new NoobSendSocket(this.mSocket, prob);
+    public Server makeItPacketLossWhenSending(double prob) throws SocketException{
+        this.mSocket = new LossSendSocket(this.mSocket, prob);
         return this;
     }
     /**
@@ -65,8 +65,8 @@ public class Server {
      * @return
      * @throws SocketException
      */
-    public Server makeItKisiao(double prob) throws SocketException{
-        this.mSocket = new KisiaoSocket(this.mSocket, prob);
+    public Server makeItSendGibberish(double prob) throws SocketException{
+        this.mSocket = new GibberishSocket(this.mSocket, prob);
         return this;
     }
 
