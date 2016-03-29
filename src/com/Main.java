@@ -47,7 +47,8 @@ public class Main {
                   .use(3, new RegisterStrategy(folder, callback))
                   .use(4, new SizeStrategy(folder))
                   .use(5, new DoubleStrategy(folder, callback))
-                  .use(6, new LastModifiedStrategy(folder));
+                  .use(6, new LastModifiedStrategy(folder))
+                  .use(7, new CreateFileStrategy(folder));
 
             if (ns.getInt("lag") > 0) {
                 server.makeItLag(ns.getInt("lag"));
