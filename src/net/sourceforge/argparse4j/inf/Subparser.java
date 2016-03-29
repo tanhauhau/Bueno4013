@@ -53,9 +53,8 @@ public interface Subparser extends ArgumentParser {
 
     /**
      * Sets the text to display in help message.
-     * 
-     * @param help
-     *            The text to display in help message.
+     *
+     * @param help The text to display in help message.
      * @return this
      */
     Subparser help(String help);
@@ -63,9 +62,8 @@ public interface Subparser extends ArgumentParser {
     /**
      * Sets alias names for this Subparser. The alias names must be unique for
      * each {@link Subparsers} instance which this object belongs to.
-     * 
-     * @param alias
-     *            Alias name for this Subparser.
+     *
+     * @param alias Alias name for this Subparser.
      * @return this
      */
     Subparser aliases(String... alias);

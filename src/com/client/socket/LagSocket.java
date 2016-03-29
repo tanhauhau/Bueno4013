@@ -16,6 +16,7 @@ public class LagSocket extends WrapperSocket {
 
     /**
      * Class Constructor for LagSocket
+     *
      * @param time lag for this number of millisecond when sending or receiving packet
      */
     public LagSocket(Socket socket, int time) {
@@ -26,9 +27,10 @@ public class LagSocket extends WrapperSocket {
     /**
      * This method create a new datagram packet with the parameters input and
      * send the packet, with a lag pre-defined
-     * @param pack          Marshalling object
-     * @param address       IP Address
-     * @param port          Port used for communication between server and client
+     *
+     * @param pack    Marshalling object
+     * @param address IP Address
+     * @param port    Port used for communication between server and client
      * @throws IOException
      */
     @Override
@@ -40,7 +42,8 @@ public class LagSocket extends WrapperSocket {
     /**
      * This method create a new datagram packet with the parameters input and
      * send the packet, with a lag pre-defined
-     * @param p             Datagram Packet
+     *
+     * @param p Datagram Packet
      * @throws IOException
      */
     @Override
@@ -51,7 +54,8 @@ public class LagSocket extends WrapperSocket {
 
     /**
      * This method received datagram from client
-     * @param p             Datagram Packet
+     *
+     * @param p Datagram Packet
      * @throws IOException
      */
     @Override
@@ -65,10 +69,10 @@ public class LagSocket extends WrapperSocket {
      * the pre-defined time, to resemble the scenario
      * of server lag
      */
-    private void lag(){
+    private void lag() {
         try {
             Thread.sleep(this.time);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 }

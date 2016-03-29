@@ -25,7 +25,6 @@ package net.sourceforge.argparse4j.inf;
 
 /**
  * This interface defines simple data validation method.
- * 
  */
 public interface ArgumentChoice {
 
@@ -39,9 +38,8 @@ public interface ArgumentChoice {
      * of invalid input from command line, subclass must catch these exceptions
      * and return {@code false}.
      * </p>
-     * 
-     * @param val
-     *            The attribute value.
+     *
+     * @param val The attribute value.
      * @return {@code true} or {@code false}.
      */
     boolean contains(Object val);
@@ -53,7 +51,7 @@ public interface ArgumentChoice {
      * <p>
      * This string will be used in help and error messages.
      * </p>
-     * 
+     *
      * @return The textual representation of this choice.
      */
     String textualFormat();

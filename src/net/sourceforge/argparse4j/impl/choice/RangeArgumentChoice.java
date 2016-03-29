@@ -30,14 +30,13 @@ import net.sourceforge.argparse4j.inf.ArgumentChoice;
  * <p>
  * Choices from given range.
  * </p>
- * 
+ * <p/>
  * <p>
  * The given value will be checked if it is in range [min, max], inclusive. The
  * {@code min} and {@code max} are specified in constructor arguments.
  * </p>
- * 
- * @param <T>
- *            The type to compare.
+ *
+ * @param <T> The type to compare.
  */
 public class RangeArgumentChoice<T extends Comparable<T>> implements
         ArgumentChoice {
@@ -47,11 +46,9 @@ public class RangeArgumentChoice<T extends Comparable<T>> implements
 
     /**
      * Creates object using range [{@code min}, {@code max}], inclusive.
-     * 
-     * @param min
-     *            The lowerbound of the range, inclusive.
-     * @param max
-     *            The upperbound of the range, inclusive.
+     *
+     * @param min The lowerbound of the range, inclusive.
+     * @param max The upperbound of the range, inclusive.
      */
     public RangeArgumentChoice(T min, T max) {
         min_ = min;

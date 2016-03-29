@@ -29,14 +29,15 @@ public class CacheStrategy extends Strategy {
 
     /**
      * This method will load the file available in cache to client
-     * @param client            Client object
-     * @param filename          Name of the file where client wants to access
+     *
+     * @param client   Client object
+     * @param filename Name of the file where client wants to access
      * @return boolean true (if available) or false
      * @throws IOException
      */
 
     public boolean loadCache(Client client, String filename) throws IOException {
-        if(cache.cacheAvailable(client, filename)) {
+        if (cache.cacheAvailable(client, filename)) {
             System.out.println("  CacheStrategy >> FileCache is available, do nothing");
             return true;
         } else {
@@ -63,7 +64,7 @@ public class CacheStrategy extends Strategy {
                 Console.println("  CacheStrategy >> Update FileCache");
                 cache.writeToCache(filename, data);
                 return true;
-            }else{
+            } else {
                 Console.println(String.format("  CacheStrategy >> Error: %s", result.getString(DATA)));
                 return false;
             }
@@ -72,8 +73,9 @@ public class CacheStrategy extends Strategy {
 
     /**
      * Accept File name input from client and load the file from cache
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     *
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override

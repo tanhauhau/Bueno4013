@@ -21,7 +21,8 @@ public class CacheWritingStrategy extends Strategy {
 
     /**
      * Class Constructor for CacheWritingStrategy Class
-     * @param cache     Cache object
+     *
+     * @param cache Cache object
      */
     public CacheWritingStrategy(Cache cache) {
         super(null);
@@ -36,8 +37,8 @@ public class CacheWritingStrategy extends Strategy {
      * will be updated, then it will be send back to server
      * for cache content update
      *
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
@@ -63,15 +64,15 @@ public class CacheWritingStrategy extends Strategy {
             Console.println("  CacheWritingStrategy >> write success");
 
             //update cache as well
-            if(!cache.cacheAvailable(client, filename)){
+            if (!cache.cacheAvailable(client, filename)) {
                 Console.info("  CacheWritingStrategy >> FileCache is not available");
                 Console.info("  CacheWritingStrategy >> Load FileCache");
                 this.cacheStrategy.loadCache(client, filename);
-            }else {
+            } else {
                 Console.info("  CacheWritingStrategy >> Update cache");
                 cache.writeToCache(filename, offset, content);
             }
-        }else{
+        } else {
             Console.println("  CacheWritingStrategy >> write failed");
         }
     }

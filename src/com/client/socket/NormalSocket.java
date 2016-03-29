@@ -20,9 +20,10 @@ public class NormalSocket implements Socket {
 
     /**
      * Class Constructor for NormalSocket
-     * @param socket        Socket used
+     *
+     * @param socket Socket used
      */
-    public NormalSocket(DatagramSocket socket){
+    public NormalSocket(DatagramSocket socket) {
         this.socket = socket;
     }
 
@@ -30,9 +31,9 @@ public class NormalSocket implements Socket {
      * This method create a new datagram packet with the parameters input and
      * send the packet
      *
-     * @param pack          Marshalling object
-     * @param address       IP Address
-     * @param port          Port used for communication between server and client
+     * @param pack    Marshalling object
+     * @param address IP Address
+     * @param port    Port used for communication between server and client
      * @throws IOException
      */
     public void send(Pack pack, InetAddress address, int port) throws IOException {
@@ -45,7 +46,8 @@ public class NormalSocket implements Socket {
     /**
      * This method send the packed datagram packet to the correspond
      * IP address and port, together with the timestamp
-     * @param p         Datagram Packet
+     *
+     * @param p Datagram Packet
      * @throws IOException
      */
     public void send(DatagramPacket p) throws IOException {
@@ -55,10 +57,11 @@ public class NormalSocket implements Socket {
 
     /**
      * This method received datagram from client
-     * @param p         Datagram Packet
+     *
+     * @param p Datagram Packet
      * @throws IOException
      */
-    public void receive(DatagramPacket p) throws IOException{
+    public void receive(DatagramPacket p) throws IOException {
         this.socket.receive(p);
         Console.info(String.format(" Socket >> %s Received packet from %s(%d)", new Date().toString(), p.getAddress().toString(), p.getPort()));
     }
@@ -66,14 +69,15 @@ public class NormalSocket implements Socket {
     /**
      * This method close the connection socket
      */
-    public void close(){
+    public void close() {
         Console.info(String.format(" Socket >> %s Closing socket", new Date().toString()));
         this.socket.close();
     }
 
     /**
      * Set timeout period for the timeout interval
-     * @param time      Period of interval
+     *
+     * @param time Period of interval
      * @throws SocketException
      */
     @Override

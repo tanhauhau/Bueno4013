@@ -17,8 +17,9 @@ import java.util.Date;
  */
 public class FileCache extends Cache {
     private final String folder;
+
     /**
-     * @param folder cache folder path
+     * @param folder    cache folder path
      * @param freshness number of second
      */
     public FileCache(String folder, int freshness) {
@@ -35,7 +36,7 @@ public class FileCache extends Cache {
         return new FileRecord(filename, path.toString(), lastValidate);
     }
 
-    public String readFromCache(String filename, int offset, int length) throws IOException{
+    public String readFromCache(String filename, int offset, int length) throws IOException {
         byte[] buffer = new byte[length];
         RandomAccessFile raf = new RandomAccessFile(getCacheFilePath(filename), "r");
         raf.seek(offset);
@@ -43,14 +44,15 @@ public class FileCache extends Cache {
         return new String(buffer);
     }
 
-    public void writeToCache(String filename, int offset, String content) throws IOException{
+    public void writeToCache(String filename, int offset, String content) throws IOException {
         updateCacheRecord(filename);
         RandomAccessFile raf = new RandomAccessFile(getCacheFilePath(filename), "rw");
         raf.seek(offset);
         raf.writeBytes(content);
         raf.close();
     }
-    public void writeToCache(String filename, String content) throws IOException{
+
+    public void writeToCache(String filename, String content) throws IOException {
         updateCacheRecord(filename);
         String path = getCacheFilePath(filename);
         Path filepath = Paths.get(path);
@@ -58,8 +60,8 @@ public class FileCache extends Cache {
         Files.write(filepath, content.getBytes(), StandardOpenOption.WRITE);
     }
 
-    public String getCacheFilePath(String filename){
-        if (cacheTable.containsKey(filename)){
+    private String getCacheFilePath(String filename) {
+        if (cacheTable.containsKey(filename)) {
             return ((FileRecord) cacheTable.get(filename)).cacheFilepath;
         }
         return null;
@@ -72,9 +74,10 @@ public class FileCache extends Cache {
             super(filename, lastValidated);
             this.cacheFilepath = cacheFilepath;
         }
+
         @Override
         public String toString() {
-            return String.format("%s, tc=%s, %s", filename, new Date(lastValidated).toString(), isFresh()?"fresh":"sour");
+            return String.format("%s, tc=%s, %s", filename, new Date(lastValidated).toString(), isFresh() ? "fresh" : "sour");
         }
     }
 }

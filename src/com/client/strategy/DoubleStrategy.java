@@ -30,8 +30,8 @@ public class DoubleStrategy extends Strategy {
      * the server will duplicate the entire content of the file,
      * and double the size of the file
      *
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
@@ -50,7 +50,7 @@ public class DoubleStrategy extends Strategy {
 
         if (isStatusOK(result)) {
             Console.println("  DoubleStrategy >> Success");
-        }else{
+        } else {
             Console.println("  DoubleStrategy >> Failed");
         }
     }

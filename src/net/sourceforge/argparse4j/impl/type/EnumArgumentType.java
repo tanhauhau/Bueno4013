@@ -20,10 +20,9 @@ import net.sourceforge.argparse4j.inf.ArgumentType;
  * {@link ArgumentParserException}. This means it already act like a
  * {@link Argument#choices(Object...)}.
  * </p>
- * 
+ *
+ * @param <T> Type of enum
  * @deprecated Use {@link ReflectArgumentType} instead.
- * @param <T>
- *            Type of enum
  */
 public class EnumArgumentType<T extends Enum<T>> implements ArgumentType<T> {
 

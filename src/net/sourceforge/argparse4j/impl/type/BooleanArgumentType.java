@@ -24,11 +24,7 @@
 package net.sourceforge.argparse4j.impl.type;
 
 import net.sourceforge.argparse4j.helper.TextHelper;
-import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentParser;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.ArgumentType;
-import net.sourceforge.argparse4j.inf.MetavarInference;
+import net.sourceforge.argparse4j.inf.*;
 
 /**
  * <p>
@@ -58,11 +54,13 @@ import net.sourceforge.argparse4j.inf.MetavarInference;
  * strings, and application can specify what strings are used as true or false
  * value.
  * </p>
- * 
+ *
  * @since 0.7.0
  */
 public class BooleanArgumentType implements ArgumentType<Boolean>,
         MetavarInference {
+
+    private String trueValue_, falseValue_;
 
     /**
      * Creates BooleanArgumentType with "true" as true value, and "false" as
@@ -74,11 +72,9 @@ public class BooleanArgumentType implements ArgumentType<Boolean>,
 
     /**
      * Creates BooleanArgumentType with given values.
-     * 
-     * @param trueValue
-     *            string used as true value
-     * @param falseValue
-     *            string used as false value
+     *
+     * @param trueValue  string used as true value
+     * @param falseValue string used as false value
      */
     public BooleanArgumentType(String trueValue, String falseValue) {
         this.trueValue_ = trueValue;
@@ -105,14 +101,12 @@ public class BooleanArgumentType implements ArgumentType<Boolean>,
      * <p>
      * Infers metavar based on given strings.
      * </p>
-     * 
+     *
      * @see net.sourceforge.argparse4j.inf.MetavarInference#inferMetavar()
      */
     @Override
     public String[] inferMetavar() {
-        return new String[] { TextHelper.concat(new String[] { trueValue_,
-                falseValue_ }, 0, ",", "{", "}") };
+        return new String[]{TextHelper.concat(new String[]{trueValue_,
+                falseValue_}, 0, ",", "{", "}")};
     }
-
-    private String trueValue_, falseValue_;
 }

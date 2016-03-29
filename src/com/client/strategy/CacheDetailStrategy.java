@@ -17,7 +17,8 @@ public class CacheDetailStrategy extends Strategy {
 
     /**
      * Class Constructor of CacheDetailStrategy
-     * @param cache     Cache object
+     *
+     * @param cache Cache object
      */
     public CacheDetailStrategy(Cache cache) {
         super(null);
@@ -27,17 +28,18 @@ public class CacheDetailStrategy extends Strategy {
     /**
      * This method will list out all the files available
      * in the Client's cache
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     *
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         Console.println(" >>> Cached Listing <<< ");
         int count = 0;
-        for(String filename : cache.getCachedSet()){
+        for (String filename : cache.getCachedSet()) {
             System.out.println(cache.getCacheRecord(filename));
-            count ++;
+            count++;
         }
         Console.println(String.format(" Total %d file", count));
         Console.println(" >>> Cache Listing <<< ");

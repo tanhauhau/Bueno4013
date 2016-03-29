@@ -41,18 +41,18 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Arg {
     /**
      * The name of attribute to be assigned.
-     * 
+     *
      * @return The name of attribute
      */
     String dest() default "";
 
     /**
      * Set {@code true} if you want to ignore the error in assignment.
-     * 
+     *
      * @return {@code true} or {@code false}
      */
     boolean ignoreError() default false;

@@ -25,11 +25,7 @@ package net.sourceforge.argparse4j.helper;
 
 import java.io.PrintWriter;
 import java.text.BreakIterator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * <p>
@@ -38,22 +34,20 @@ import java.util.Locale;
  * <p>
  * <strong>The application code should not use this class directly.</strong>
  * </p>
- * 
  */
 public final class TextHelper {
-
-    private TextHelper() {
-    }
 
     /**
      * Language neutral locale. Defined here for Java5.
      */
     public static final Locale LOCALE_ROOT = new Locale("", "", "");
-
     public static final String LINESEP = System.getProperty("line.separator");
 
+    private TextHelper() {
+    }
+
     public static <T> String concat(T a[], int offset, String sep,
-            String start, String end) {
+                                    String start, String end) {
         StringBuilder sb = new StringBuilder();
         sb.append(start);
         if (a.length - offset > 0) {
@@ -71,7 +65,7 @@ public final class TextHelper {
     }
 
     public static <T> String concat(Collection<T> a, int offset, String sep,
-            String start, String end) {
+                                    String start, String end) {
         StringBuilder sb = new StringBuilder();
         sb.append(start);
         Iterator<T> it;
@@ -92,8 +86,8 @@ public final class TextHelper {
     }
 
     public static String wrap(TextWidthCounter textWidthCounter, String s,
-            int width, int initialOffset, String initialIndent,
-            String subsequentIndent) {
+                              int width, int initialOffset, String initialIndent,
+                              String subsequentIndent) {
         BreakIterator iter = BreakIterator.getLineInstance();
         iter.setText(s);
         StringBuilder res = new StringBuilder(initialIndent);
@@ -130,17 +124,14 @@ public final class TextHelper {
      * spaces in sb to make it look more "natural". The insertion points are the
      * contagious block of white spaces. Before the processing, leading and
      * trailing white spaces are removed from sb.
-     * 
-     * @param sb
-     *            String to adjust
-     * @param width
-     *            maximum line width
-     * @param curwidth
-     *            current line width
+     *
+     * @param sb       String to adjust
+     * @param width    maximum line width
+     * @param curwidth current line width
      * @return adjusted sb
      */
     public static StringBuilder adjustSpace(StringBuilder sb, int width,
-            int curwidth) {
+                                            int curwidth) {
         int i, len = sb.length();
         int origLen = len;
         for (i = 0; i < len && sb.charAt(i) == ' '; ++i)
@@ -197,7 +188,7 @@ public final class TextHelper {
     }
 
     public static void printHelp(PrintWriter writer, String title, String help,
-            TextWidthCounter textWidthCounter, int width) {
+                                 TextWidthCounter textWidthCounter, int width) {
         int INDENT_WIDTH = 25;
         writer.print("  ");
         writer.print(title);
@@ -230,11 +221,9 @@ public final class TextHelper {
     /**
      * From src, find string whose prefix is prefix and store them in List and
      * return it.
-     * 
-     * @param src
-     *            collection contains strings to inspect
-     * @param prefix
-     *            prefix
+     *
+     * @param src    collection contains strings to inspect
+     * @param prefix prefix
      * @return List of strings matched
      */
     public static List<String> findPrefix(Collection<String> src, String prefix) {

@@ -23,21 +23,15 @@
  */
 package net.sourceforge.argparse4j.internal;
 
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.sourceforge.argparse4j.helper.TextHelper;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.Subparser;
 import net.sourceforge.argparse4j.inf.Subparsers;
+
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * <strong>The application code must not use this class directly.</strong>
- * 
  */
 public final class SubparsersImpl implements Subparsers {
 
@@ -71,7 +65,7 @@ public final class SubparsersImpl implements Subparsers {
 
     @Override
     public SubparserImpl addParser(String command, boolean addHelp,
-            String prefixChars) {
+                                   String prefixChars) {
         if (command == null || command.isEmpty()) {
             throw new IllegalArgumentException(
                     "command cannot be null or empty");
@@ -134,7 +128,7 @@ public final class SubparsersImpl implements Subparsers {
      * resolves abbreviated command input as well. If the given command is
      * ambiguous, {@link ArgumentParserException} will be thrown. If no matching
      * SubparserImpl is found, this function returns null.
-     * 
+     *
      * @param state
      * @param command
      * @return next SubparserImpl or null
@@ -210,11 +204,9 @@ public final class SubparsersImpl implements Subparsers {
 
     /**
      * Writes the help message for this and descendants.
-     * 
-     * @param writer
-     *            The writer to output
-     * @param format_width
-     *            column width
+     *
+     * @param writer       The writer to output
+     * @param format_width column width
      */
     public void printSubparserHelp(PrintWriter writer, int format_width) {
         TextHelper.printHelp(writer, formatShortSyntax(), help_,
@@ -229,7 +221,7 @@ public final class SubparsersImpl implements Subparsers {
 
     /**
      * Returns collection of the sub-command name under this object.
-     * 
+     *
      * @return collection of the sub-comman name
      */
     public Collection<String> getCommands() {
@@ -240,11 +232,9 @@ public final class SubparsersImpl implements Subparsers {
      * Adds Subparser alias names for given Subparser. For each SubparsersImpl
      * instance, alias names and commands must be unique. If duplication is
      * found, {@link IllegalArgumentException} is thrown.
-     * 
-     * @param subparser
-     *            Subparser to add alias names
-     * @param alias
-     *            alias name
+     *
+     * @param subparser Subparser to add alias names
+     * @param alias     alias name
      */
     public void addAlias(SubparserImpl subparser, String... alias) {
         for (String command : alias) {

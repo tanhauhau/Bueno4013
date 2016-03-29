@@ -23,13 +23,13 @@
  */
 package net.sourceforge.argparse4j.impl.type;
 
-import java.lang.reflect.InvocationTargetException;
-
 import net.sourceforge.argparse4j.helper.TextHelper;
 import net.sourceforge.argparse4j.inf.Argument;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.ArgumentType;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>
@@ -42,7 +42,7 @@ import net.sourceforge.argparse4j.inf.ArgumentType;
  * occurred in other locations, subclass of {@link RuntimeException} will be
  * thrown.
  * </p>
- * 
+ *
  * @deprecated Use {@link ReflectArgumentType} instead.
  */
 public class ConstructorArgumentType<T> implements ArgumentType<T> {
@@ -56,9 +56,8 @@ public class ConstructorArgumentType<T> implements ArgumentType<T> {
      * <p>
      * The constructor of {@code type} must have 1 String argument.
      * </p>
-     * 
-     * @param type
-     *            The type String value should be converted to.
+     *
+     * @param type The type String value should be converted to.
      */
     public ConstructorArgumentType(Class<T> type) {
         type_ = type;

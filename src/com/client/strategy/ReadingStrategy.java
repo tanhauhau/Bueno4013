@@ -31,8 +31,9 @@ public class ReadingStrategy extends Strategy {
      * This method serves as normal method for client to
      * read a certain file from server
      * This method does not utilize cache
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     *
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
@@ -57,7 +58,7 @@ public class ReadingStrategy extends Strategy {
 
         if (isStatusOK(result)) {
             Console.println(String.format("  ReadingStrategy >> Data: '%s'", result.getString(DATA)));
-        }else{
+        } else {
             Console.println(String.format("  ReadingStrategy >> Error: %s", result.getString(DATA)));
         }
     }

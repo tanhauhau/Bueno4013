@@ -1,9 +1,9 @@
 package net.sourceforge.argparse4j.internal;
 
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
 
 public class ParseState {
     /**
@@ -60,7 +60,7 @@ public class ParseState {
     public List<String> unknown;
 
     public ParseState(String args[], int index, boolean negNumFlag,
-            List<String> unknown) {
+                      List<String> unknown) {
         this.args = args;
         this.index = index;
         this.lastFromFileArgIndex = -1;

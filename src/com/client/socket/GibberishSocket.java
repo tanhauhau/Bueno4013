@@ -16,8 +16,9 @@ public class GibberishSocket extends WrapperSocket {
 
     /**
      * Class Constructor for GibberishSocket
-     * @param socket            Socket used for communication
-     * @param probability       Probability of the packet will be damage and corrupted
+     *
+     * @param socket      Socket used for communication
+     * @param probability Probability of the packet will be damage and corrupted
      */
     public GibberishSocket(Socket socket, double probability) {
         super(socket);
@@ -27,9 +28,10 @@ public class GibberishSocket extends WrapperSocket {
 
     /**
      * Fill the byte array in datagram with rubbish data
-     * @param pack              Marshalling object
-     * @param address           IP Address
-     * @param port              Port used for communication between server and client
+     *
+     * @param pack    Marshalling object
+     * @param address IP Address
+     * @param port    Port used for communication between server and client
      * @throws IOException
      */
     @Override
@@ -38,14 +40,15 @@ public class GibberishSocket extends WrapperSocket {
             byte[] rubbish = new byte[200];
             fillRubbish(rubbish);
             super.send(new Pack.Builder().setValue("rubbish", rubbish).build(), address, port);
-        }else{
+        } else {
             super.send(pack, address, port);
         }
     }
 
     /**
      * Fill the bytearray in datagram with rubbish data
-     * @param p                 Datagram Packet
+     *
+     * @param p Datagram Packet
      * @throws IOException
      */
     @Override
@@ -62,7 +65,8 @@ public class GibberishSocket extends WrapperSocket {
 
     /**
      * Pack the byte array with random data
-     * @param data              Byte Array in Datagram Packet
+     *
+     * @param data Byte Array in Datagram Packet
      */
     private void fillRubbish(byte[] data) {
         this.random.nextBytes(data);
@@ -75,7 +79,7 @@ public class GibberishSocket extends WrapperSocket {
      *
      * @return A boolean of either true of false
      */
-    private boolean isSoUnlucky(){
+    private boolean isSoUnlucky() {
         return this.random.nextDouble() >= this.prob;
     }
 }

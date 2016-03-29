@@ -23,47 +23,28 @@
  */
 package net.sourceforge.argparse4j.internal;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.annotation.Arg;
+import net.sourceforge.argparse4j.helper.*;
+import net.sourceforge.argparse4j.impl.Arguments;
+import net.sourceforge.argparse4j.inf.*;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
-
-import net.sourceforge.argparse4j.ArgumentParsers;
-import net.sourceforge.argparse4j.annotation.Arg;
-import net.sourceforge.argparse4j.helper.ASCIITextWidthCounter;
-import net.sourceforge.argparse4j.helper.PrefixPattern;
-import net.sourceforge.argparse4j.helper.ReflectHelper;
-import net.sourceforge.argparse4j.helper.TextHelper;
-import net.sourceforge.argparse4j.helper.TextWidthCounter;
-import net.sourceforge.argparse4j.impl.Arguments;
-import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentGroup;
-import net.sourceforge.argparse4j.inf.ArgumentParser;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.MutuallyExclusiveGroup;
-import net.sourceforge.argparse4j.inf.Namespace;
 
 /**
  * <strong>The application code must not use this class directly.</strong>
  */
 public final class ArgumentParserImpl implements ArgumentParser {
 
+    private static final Pattern NEG_NUM_PATTERN = Pattern.compile("-\\d+");
+    private static final Pattern SHORT_OPTS_PATTERN = Pattern
+            .compile("-[^-].*");
     private Map<String, ArgumentImpl> optargIndex_ = new HashMap<String, ArgumentImpl>();
     private List<ArgumentImpl> optargs_ = new ArrayList<ArgumentImpl>();
     private List<ArgumentImpl> posargs_ = new ArrayList<ArgumentImpl>();
@@ -85,10 +66,6 @@ public final class ArgumentParserImpl implements ArgumentParser {
     private ResourceBundle resourceBundle = ResourceBundle.getBundle(this
             .getClass().getName());
 
-    private static final Pattern NEG_NUM_PATTERN = Pattern.compile("-\\d+");
-    private static final Pattern SHORT_OPTS_PATTERN = Pattern
-            .compile("-[^-].*");
-
     public ArgumentParserImpl(String prog) {
         this(prog, true, ArgumentParsers.DEFAULT_PREFIX_CHARS, null,
                 new ASCIITextWidthCounter(), null, null);
@@ -105,20 +82,20 @@ public final class ArgumentParserImpl implements ArgumentParser {
     }
 
     public ArgumentParserImpl(String prog, boolean addHelp, String prefixChars,
-            String fromFilePrefix) {
+                              String fromFilePrefix) {
         this(prog, addHelp, prefixChars, fromFilePrefix,
                 new ASCIITextWidthCounter(), null, null);
     }
 
     public ArgumentParserImpl(String prog, boolean addHelp, String prefixChars,
-            String fromFilePrefix, TextWidthCounter textWidthCounter) {
+                              String fromFilePrefix, TextWidthCounter textWidthCounter) {
         this(prog, addHelp, prefixChars, fromFilePrefix, textWidthCounter,
                 null, null);
     }
 
     public ArgumentParserImpl(String prog, boolean addHelp, String prefixChars,
-            String fromFilePrefix, TextWidthCounter textWidthCounter,
-            String command, ArgumentParserImpl mainParser) {
+                              String fromFilePrefix, TextWidthCounter textWidthCounter,
+                              String command, ArgumentParserImpl mainParser) {
         this.prog_ = TextHelper.nonNull(prog);
         this.command_ = command;
         this.mainParser_ = mainParser;
@@ -140,13 +117,31 @@ public final class ArgumentParserImpl implements ArgumentParser {
         }
     }
 
+    /**
+     * Returns arguments in {@code args} whose {@link Argument#getHelpControl()}
+     * do not return {@link Arguments#SUPPRESS}.
+     *
+     * @param args
+     * @return filtered list of arguments
+     */
+    private static List<ArgumentImpl> filterSuppressedArgs(
+            Collection<ArgumentImpl> args) {
+        ArrayList<ArgumentImpl> res = new ArrayList<ArgumentImpl>();
+        for (ArgumentImpl arg : args) {
+            if (arg.getHelpControl() != Arguments.SUPPRESS) {
+                res.add(arg);
+            }
+        }
+        return res;
+    }
+
     @Override
     public ArgumentImpl addArgument(String... nameOrFlags) {
         return addArgument(null, nameOrFlags);
     }
 
     public ArgumentImpl addArgument(ArgumentGroupImpl group,
-            String... nameOrFlags) {
+                                    String... nameOrFlags) {
         ArgumentImpl arg = new ArgumentImpl(prefixPattern_, group, nameOrFlags);
         if (arg.isOptionalArgument()) {
             for (String flag : arg.getFlags()) {
@@ -216,9 +211,8 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     /**
      * Set text to display before the argument help.
-     * 
-     * @param description
-     *            text to display before the argument help
+     *
+     * @param description text to display before the argument help
      * @return this
      */
     @Override
@@ -250,7 +244,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
     }
 
     private void printArgumentHelp(PrintWriter writer, List<ArgumentImpl> args,
-            int format_width) {
+                                   int format_width) {
         for (ArgumentImpl arg : args) {
             if (arg.getArgumentGroup() == null
                     || !arg.getArgumentGroup().isSeparateHelp()) {
@@ -339,8 +333,8 @@ public final class ArgumentParserImpl implements ArgumentParser {
     }
 
     private void printArgumentUsage(PrintWriter writer, List<String> opts,
-            int offset, String firstIndent, String subsequentIndent,
-            int format_width) {
+                                    int offset, String firstIndent, String subsequentIndent,
+                                    int format_width) {
         int currentWidth = offset + firstIndent.length();
         writer.print(firstIndent);
         boolean first = true;
@@ -403,7 +397,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
         for (ArgumentImpl arg : optargs_) {
             if (arg.getHelpControl() != Arguments.SUPPRESS
                     && (arg.getArgumentGroup() == null || !arg
-                            .getArgumentGroup().isMutex())) {
+                    .getArgumentGroup().isMutex())) {
                 opts.add(arg.formatShortSyntax());
             }
         }
@@ -445,35 +439,15 @@ public final class ArgumentParserImpl implements ArgumentParser {
     }
 
     /**
-     * Returns arguments in {@code args} whose {@link Argument#getHelpControl()}
-     * do not return {@link Arguments#SUPPRESS}.
-     * 
-     * @param args
-     * @return filtered list of arguments
-     */
-    private static List<ArgumentImpl> filterSuppressedArgs(
-            Collection<ArgumentImpl> args) {
-        ArrayList<ArgumentImpl> res = new ArrayList<ArgumentImpl>();
-        for (ArgumentImpl arg : args) {
-            if (arg.getHelpControl() != Arguments.SUPPRESS) {
-                res.add(arg);
-            }
-        }
-        return res;
-    }
-
-    /**
      * Appends command, required optional arguments and positional arguments in
      * {@code parser} to {@code opts} recursively. Most upper parser stores
      * first, just like post order traversal.
-     * 
-     * @param opts
-     *            Command, required optional arguments and positional arguments.
-     * @param parser
-     *            The parser
+     *
+     * @param opts   Command, required optional arguments and positional arguments.
+     * @param parser The parser
      */
     private void addUpperParserUsage(List<String> opts,
-            ArgumentParserImpl parser) {
+                                     ArgumentParserImpl parser) {
         if (parser == null) {
             return;
         }
@@ -485,7 +459,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
             if (arg.getHelpControl() != Arguments.SUPPRESS
                     && arg.isRequired()
                     && (arg.getArgumentGroup() == null || !arg
-                            .getArgumentGroup().isMutex())) {
+                    .getArgumentGroup().isMutex())) {
                 opts.add(arg.formatShortSyntax());
             }
         }
@@ -548,9 +522,8 @@ public final class ArgumentParserImpl implements ArgumentParser {
      * while parser-level defaults always override argument-level defaults while
      * parsing, this method examines argument-level defaults first. If no
      * default value is found, then check parser-level defaults.
-     * 
-     * @param dest
-     *            attribute name of default value to get.
+     *
+     * @param dest attribute name of default value to get.
      * @return default value of given dest.
      */
     @Override
@@ -615,7 +588,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     @Override
     public void parseKnownArgs(String[] args, List<String> unknown,
-            Map<String, Object> attrs) throws ArgumentParserException {
+                               Map<String, Object> attrs) throws ArgumentParserException {
         parseKnownArgs(args, 0, unknown, attrs);
     }
 
@@ -628,27 +601,27 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     @Override
     public void parseKnownArgs(String[] args, List<String> unknown,
-            Object userData) throws ArgumentParserException {
+                               Object userData) throws ArgumentParserException {
         Map<String, Object> attrs = new HashMap<String, Object>();
         parseKnownArgs(args, unknown, attrs, userData);
     }
 
     @Override
     public void parseArgs(String[] args, Map<String, Object> attrs,
-            Object userData) throws ArgumentParserException {
+                          Object userData) throws ArgumentParserException {
         parseArgs(args, 0, null, attrs);
         fillUserDataFromAttrs(userData, attrs);
     }
 
     @Override
     public void parseKnownArgs(String[] args, List<String> unknown,
-            Map<String, Object> attrs, Object userData)
+                               Map<String, Object> attrs, Object userData)
             throws ArgumentParserException {
         parseKnownArgs(args, 0, unknown, attrs);
         fillUserDataFromAttrs(userData, attrs);
     }
 
-    public void fillUserDataFromAttrs(Object userData, Map<String, Object> attrs)
+    private void fillUserDataFromAttrs(Object userData, Map<String, Object> attrs)
             throws ArgumentParserException {
 
         Class userClass = userData.getClass();
@@ -739,16 +712,16 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     }
 
-    public void parseKnownArgs(String args[], int offset, List<String> unknown,
-            Map<String, Object> attrs) throws ArgumentParserException {
+    private void parseKnownArgs(String args[], int offset, List<String> unknown,
+                                Map<String, Object> attrs) throws ArgumentParserException {
         if (unknown == null) {
             unknown = new ArrayList<String>();
         }
         parseArgs(args, offset, unknown, attrs);
     }
 
-    public void parseArgs(String args[], int offset, List<String> unknown,
-            Map<String, Object> attrs) throws ArgumentParserException {
+    private void parseArgs(String args[], int offset, List<String> unknown,
+                           Map<String, Object> attrs) throws ArgumentParserException {
         ParseState state = new ParseState(args, offset, negNumFlag_, unknown);
         parseArgs(state, attrs);
         if (state.deferredException != null) {
@@ -760,9 +733,8 @@ public final class ArgumentParserImpl implements ArgumentParser {
      * Check that term forms a valid concatenated short options. Note that this
      * option does not actually process arguments. Therefore, true from this
      * function does not mean all arguments in term are acceptable.
-     * 
-     * @param term
-     *            string to inspect
+     *
+     * @param term string to inspect
      * @return true if term forms a valid concatenated short options.
      */
     private boolean checkConcatenatedShortOpts(String term) {
@@ -788,12 +760,10 @@ public final class ArgumentParserImpl implements ArgumentParser {
      * function handles abbreviation as well. If flag is ambiguous,
      * {@link ArgumentParserException} will be thrown. If flag does not match
      * any ArgumentImpl, this function returns null.
-     * 
-     * @param flag
-     *            flag to match
+     *
+     * @param flag flag to match
      * @return ArgumentImpl which matches flag if it succeeds, or null
-     * @throws ArgumentParserException
-     *             if flag is ambiguous
+     * @throws ArgumentParserException if flag is ambiguous
      */
     private ArgumentImpl resolveNextFlag(String flag)
             throws ArgumentParserException {
@@ -927,42 +897,37 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     /**
      * Format message for "Unrecognized arguments" error.
-     * 
-     * @param state
-     *            Current parser state
-     * @param args
-     *            Textual representation of unrecognized arguments to be
-     *            included in the message as is.
+     *
+     * @param state Current parser state
+     * @param args  Textual representation of unrecognized arguments to be
+     *              included in the message as is.
      * @return formatted error message
      */
     private String formatUnrecognizedArgumentErrorMessage(ParseState state,
-            String args) {
+                                                          String args) {
         return String
                 .format(TextHelper.LOCALE_ROOT,
                         "unrecognized arguments: '%s'%s",
                         args,
                         state.index > state.lastFromFileArgIndex ? ""
                                 : String.format(
-                                        TextHelper.LOCALE_ROOT,
-                                        "%nChecking trailing white spaces or new lines in %sfile may help.",
-                                        fromFilePrefixPattern_.getPrefixChars()
-                                                .length() == 1 ? fromFilePrefixPattern_
-                                                .getPrefixChars() : "["
-                                                + fromFilePrefixPattern_
-                                                        .getPrefixChars() + "]"));
+                                TextHelper.LOCALE_ROOT,
+                                "%nChecking trailing white spaces or new lines in %sfile may help.",
+                                fromFilePrefixPattern_.getPrefixChars()
+                                        .length() == 1 ? fromFilePrefixPattern_
+                                        .getPrefixChars() : "["
+                                        + fromFilePrefixPattern_
+                                        .getPrefixChars() + "]"));
     }
 
     /**
      * Check that another option in mutually exclusive group has already been
      * specified. If so, throw an exception.
-     * 
-     * @param arg
-     *            The argument currently processed
-     * @param groupUsed
-     *            The cache of used argument in each groups.
-     * @throws ArgumentParserException
-     *             If another option in mutually exclusive group has already
-     *             been used.
+     *
+     * @param arg       The argument currently processed
+     * @param groupUsed The cache of used argument in each groups.
+     * @throws ArgumentParserException If another option in mutually exclusive group has already
+     *                                 been used.
      */
     private void checkMutex(ArgumentImpl arg, ArgumentImpl[] groupUsed)
             throws ArgumentParserException {
@@ -984,18 +949,17 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     /**
      * This function only handles an optional argument.
-     * 
+     *
      * @param res
      * @param state
      * @param arg
      * @param flag
-     * @param embeddedValue
-     *            If optional argument is given as "foo=bar" or "-fbar" (short
-     *            option), embedded value is "bar". Otherwise {@code null}
+     * @param embeddedValue If optional argument is given as "foo=bar" or "-fbar" (short
+     *                      option), embedded value is "bar". Otherwise {@code null}
      * @throws ArgumentParserException
      */
     private void processArg(Map<String, Object> res, ParseState state,
-            ArgumentImpl arg, String flag, String embeddedValue)
+                            ArgumentImpl arg, String flag, String embeddedValue)
             throws ArgumentParserException {
         if (!arg.getAction().consumeArgument()) {
             if (embeddedValue == null) {
@@ -1059,7 +1023,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
      * This function accumulates arguments for a given positional argument. It
      * only accumulates arguments based on how many arguments can be consumed
      * for given Argument object. The actual processing are done later.
-     * 
+     *
      * @param state
      * @param arg
      * @throws ArgumentParserException
@@ -1097,7 +1061,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     /**
      * This function processes optional arguments accumulated in state.
-     * 
+     *
      * @param res
      * @param state
      * @throws ArgumentParserException
@@ -1175,7 +1139,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
      * consumed, this function returns true, because "--" is treated as special
      * optional argument. If prefixFileChar is found in prefix of argument, read
      * arguments from that file and expand arguments in state necessary.
-     * 
+     *
      * @param state
      * @return
      * @throws ArgumentParserException
@@ -1193,7 +1157,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
         }
         return prefixPattern_.match(term)
                 && (state.negNumFlag || !NEG_NUM_PATTERN.matcher(term)
-                        .matches());
+                .matches());
     }
 
     private boolean fromFileFound(ParseState state) {
@@ -1203,11 +1167,9 @@ public final class ArgumentParserImpl implements ArgumentParser {
 
     /**
      * Extends arguments by reading additional arguments from file.
-     * 
-     * @param state
-     *            Current parser state.
-     * @param file
-     *            File from which additional arguments are read.
+     *
+     * @param state Current parser state.
+     * @param file  File from which additional arguments are read.
      * @throws ArgumentParserException
      */
     private void extendArgs(ParseState state, String file)
@@ -1358,23 +1320,17 @@ public final class ArgumentParserImpl implements ArgumentParser {
     /**
      * Calculates Damerau–Levenshtein distance between string {@code a} and
      * {@code b} with given costs.
-     * 
-     * @param a
-     *            String
-     * @param b
-     *            String
-     * @param swap
-     *            Cost to swap 2 adjacent characters.
-     * @param sub
-     *            Cost to substitute character.
-     * @param add
-     *            Cost to add character.
-     * @param del
-     *            Cost to delete character.
+     *
+     * @param a    String
+     * @param b    String
+     * @param swap Cost to swap 2 adjacent characters.
+     * @param sub  Cost to substitute character.
+     * @param add  Cost to add character.
+     * @param del  Cost to delete character.
      * @return Damerau–Levenshtein distance between {@code a} and {@code b}
      */
     private int levenshtein(String a, String b, int swap, int sub, int add,
-            int del) {
+                            int del) {
         int alen = a.length();
         int blen = b.length();
         int[][] dp = new int[3][blen + 1];
@@ -1400,6 +1356,107 @@ public final class ArgumentParserImpl implements ArgumentParser {
             dp[0] = temp;
         }
         return dp[1][blen];
+    }
+
+    private void printFlagCandidates(String flagBody, PrintWriter writer) {
+        List<SubjectBody> subjects = new ArrayList<SubjectBody>();
+        for (ArgumentImpl arg : optargs_) {
+            String[] flags = arg.getFlags();
+            for (int i = 0, len = flags.length; i < len; ++i) {
+                String body = prefixPattern_.removePrefix(flags[i]);
+                if (body.length() <= 1) {
+                    continue;
+                }
+                subjects.add(new SubjectBody(flags[i], body));
+            }
+        }
+        printCandidates(flagBody, subjects, writer);
+    }
+
+    private void printCommandCandidates(String command, PrintWriter writer) {
+        List<SubjectBody> subjects = new ArrayList<SubjectBody>();
+        for (String com : subparsers_.getCommands()) {
+            subjects.add(new SubjectBody(com, com));
+        }
+        printCandidates(command, subjects, writer);
+    }
+
+    /**
+     * Prints most similar subjects in subjects to body. Similarity is
+     * calculated between body and each {@link SubjectBody#body} in subjects.
+     *
+     * @param body     String to compare.
+     * @param subjects Target to be compared.
+     * @param writer   Output
+     */
+    private void printCandidates(String body, List<SubjectBody> subjects,
+                                 PrintWriter writer) {
+        List<Candidate> candidates = new ArrayList<Candidate>();
+        for (SubjectBody sub : subjects) {
+            if (sub.body.startsWith(body)) {
+                candidates.add(new Candidate(0, sub.subject));
+                continue;
+            } else {
+                // Cost values were borrowed from git, help.c
+                candidates.add(new Candidate(levenshtein(body, sub.body, 0, 2,
+                        1, 4), sub.subject));
+            }
+        }
+        if (candidates.isEmpty()) {
+            return;
+        }
+        Collections.sort(candidates);
+        int threshold = candidates.get(0).similarity;
+        // Magic number 7 was borrowed from git, help.c
+        if (threshold >= 7) {
+            return;
+        }
+        writer.println();
+        writer.println("Did you mean:");
+        for (Candidate cand : candidates) {
+            if (cand.similarity > threshold) {
+                break;
+            }
+            writer.print("\t");
+            writer.println(cand.subject);
+        }
+    }
+
+    /**
+     * Replace placeholder in src with actual value. The only known placeholder
+     * is <tt>${prog}</tt>, which is replaced with {@link #prog_}.
+     *
+     * @param src string to be processed
+     * @return the substituted string
+     */
+    private String substitutePlaceholder(String src) {
+        return src.replaceAll(Pattern.quote("${prog}"), prog_);
+    }
+
+    public String getCommand() {
+        return command_;
+    }
+
+    public TextWidthCounter getTextWidthCounter() {
+        return textWidthCounter_;
+    }
+
+    public String getPrefixChars() {
+        return prefixPattern_.getPrefixChars();
+    }
+
+    public String getFromFilePrefixChars() {
+        return fromFilePrefixPattern_ == null ? null : fromFilePrefixPattern_
+                .getPrefixChars();
+    }
+
+    /**
+     * Returns main (parent) parser.
+     *
+     * @return The main (parent) parser. null if this object is a root parser.
+     */
+    public ArgumentParserImpl getMainParser() {
+        return mainParser_;
     }
 
     private static class SubjectBody {
@@ -1443,10 +1500,7 @@ public final class ArgumentParserImpl implements ArgumentParser {
             } else if (!subject.equals(other.subject)) {
                 return false;
             }
-            if (similarity != other.similarity) {
-                return false;
-            }
-            return true;
+            return similarity == other.similarity;
         }
 
         @Override
@@ -1468,110 +1522,5 @@ public final class ArgumentParserImpl implements ArgumentParser {
                 return 1;
             }
         }
-    }
-
-    private void printFlagCandidates(String flagBody, PrintWriter writer) {
-        List<SubjectBody> subjects = new ArrayList<SubjectBody>();
-        for (ArgumentImpl arg : optargs_) {
-            String[] flags = arg.getFlags();
-            for (int i = 0, len = flags.length; i < len; ++i) {
-                String body = prefixPattern_.removePrefix(flags[i]);
-                if (body.length() <= 1) {
-                    continue;
-                }
-                subjects.add(new SubjectBody(flags[i], body));
-            }
-        }
-        printCandidates(flagBody, subjects, writer);
-    }
-
-    private void printCommandCandidates(String command, PrintWriter writer) {
-        List<SubjectBody> subjects = new ArrayList<SubjectBody>();
-        for (String com : subparsers_.getCommands()) {
-            subjects.add(new SubjectBody(com, com));
-        }
-        printCandidates(command, subjects, writer);
-    }
-
-    /**
-     * Prints most similar subjects in subjects to body. Similarity is
-     * calculated between body and each {@link SubjectBody#body} in subjects.
-     * 
-     * @param body
-     *            String to compare.
-     * @param subjects
-     *            Target to be compared.
-     * @param writer
-     *            Output
-     */
-    private void printCandidates(String body, List<SubjectBody> subjects,
-            PrintWriter writer) {
-        List<Candidate> candidates = new ArrayList<Candidate>();
-        for (SubjectBody sub : subjects) {
-            if (sub.body.startsWith(body)) {
-                candidates.add(new Candidate(0, sub.subject));
-                continue;
-            } else {
-                // Cost values were borrowed from git, help.c
-                candidates.add(new Candidate(levenshtein(body, sub.body, 0, 2,
-                        1, 4), sub.subject));
-            }
-        }
-        if (candidates.isEmpty()) {
-            return;
-        }
-        Collections.sort(candidates);
-        int threshold = candidates.get(0).similarity;
-        // Magic number 7 was borrowed from git, help.c
-        if (threshold >= 7) {
-            return;
-        }
-        writer.println();
-        writer.println("Did you mean:");
-        for (Candidate cand : candidates) {
-            if (cand.similarity > threshold) {
-                break;
-            }
-            writer.print("\t");
-            writer.println(cand.subject);
-        }
-    }
-
-    /**
-     * Replace placeholder in src with actual value. The only known placeholder
-     * is <tt>${prog}</tt>, which is replaced with {@link #prog_}.
-     * 
-     * @param src
-     *            string to be processed
-     * @return the substituted string
-     */
-    private String substitutePlaceholder(String src) {
-        return src.replaceAll(Pattern.quote("${prog}"), prog_);
-    }
-
-    public String getCommand() {
-        return command_;
-    }
-
-    public TextWidthCounter getTextWidthCounter() {
-        return textWidthCounter_;
-    }
-
-    public String getPrefixChars() {
-        return prefixPattern_.getPrefixChars();
-    }
-
-    public String getFromFilePrefixChars() {
-        return fromFilePrefixPattern_ == null ? null : fromFilePrefixPattern_
-                .getPrefixChars();
-    }
-
-    /**
-     * Returns main (parent) parser.
-     * 
-     * @return The main (parent) parser. null if this object is a root parser.
-     */
-    public ArgumentParserImpl getMainParser() {
-        return mainParser_;
     }
 }

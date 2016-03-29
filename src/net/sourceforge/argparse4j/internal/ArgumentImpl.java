@@ -23,12 +23,6 @@
  */
 package net.sourceforge.argparse4j.internal;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.helper.PrefixPattern;
 import net.sourceforge.argparse4j.helper.TextHelper;
@@ -37,17 +31,16 @@ import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.impl.choice.CollectionArgumentChoice;
 import net.sourceforge.argparse4j.impl.type.ReflectArgumentType;
 import net.sourceforge.argparse4j.impl.type.StringArgumentType;
-import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentAction;
-import net.sourceforge.argparse4j.inf.ArgumentChoice;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.ArgumentType;
-import net.sourceforge.argparse4j.inf.FeatureControl;
-import net.sourceforge.argparse4j.inf.MetavarInference;
+import net.sourceforge.argparse4j.inf.*;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * <strong>The application code must not use this class directly.</strong>
- * 
  */
 public final class ArgumentImpl implements Argument {
 
@@ -73,7 +66,7 @@ public final class ArgumentImpl implements Argument {
     }
 
     public ArgumentImpl(PrefixPattern prefixPattern,
-            ArgumentGroupImpl argumentGroup, String... nameOrFlags) {
+                        ArgumentGroupImpl argumentGroup, String... nameOrFlags) {
         if (nameOrFlags.length == 0) {
             throw new IllegalArgumentException("no nameOrFlags was specified");
         }
@@ -125,7 +118,7 @@ public final class ArgumentImpl implements Argument {
 
     /**
      * Short syntax is used in usage message, e.g. --foo BAR
-     * 
+     *
      * @return short syntax
      */
     public String formatShortSyntax() {
@@ -151,7 +144,7 @@ public final class ArgumentImpl implements Argument {
     /**
      * Short syntax is used in usage message, e.g. --foo BAR, but without
      * bracket when this is not required option.
-     * 
+     *
      * @return short syntax
      */
     public String formatShortSyntaxNoBracket() {
@@ -168,7 +161,7 @@ public final class ArgumentImpl implements Argument {
         }
     }
 
-    public String[] resolveMetavar() {
+    private String[] resolveMetavar() {
         if (metavar_ == null) {
             if (choice_ == null) {
                 if (type_ instanceof MetavarInference) {
@@ -180,13 +173,13 @@ public final class ArgumentImpl implements Argument {
                 }
 
                 if (isOptionalArgument()) {
-                    return new String[] { dest_.toUpperCase() };
+                    return new String[]{dest_.toUpperCase()};
                 }
 
-                return new String[] { dest_ };
+                return new String[]{dest_};
             }
 
-            return new String[] { choice_.textualFormat() };
+            return new String[]{choice_.textualFormat()};
         }
 
         return metavar_;
@@ -227,9 +220,9 @@ public final class ArgumentImpl implements Argument {
             String mv = formatMetavar();
             StringBuilder sb = new StringBuilder();
 
-            if(ArgumentParsers.isSingleMetavar()) {
+            if (ArgumentParsers.isSingleMetavar()) {
                 for (String flag : flags_) {
-                    if(sb.length() > 0) {
+                    if (sb.length() > 0) {
                         sb.append(", ");
                     }
                     sb.append(flag);
@@ -256,7 +249,7 @@ public final class ArgumentImpl implements Argument {
     }
 
     public void printHelp(PrintWriter writer, boolean defaultHelp,
-            TextWidthCounter textWidthCounter, int width) {
+                          TextWidthCounter textWidthCounter, int width) {
         if (helpControl_ == Arguments.SUPPRESS) {
             return;
         }
@@ -322,13 +315,6 @@ public final class ArgumentImpl implements Argument {
     }
 
     @Override
-    public <E> ArgumentImpl setConst(E... values) {
-        // Allow null
-        const_ = Arrays.asList(values);
-        return this;
-    }
-
-    @Override
     public ArgumentImpl setDefault(Object value) {
         // Allow null
         default_ = value;
@@ -339,12 +325,6 @@ public final class ArgumentImpl implements Argument {
     public <E> ArgumentImpl setDefault(E... values) {
         // Allow null
         default_ = Arrays.asList(values);
-        return this;
-    }
-
-    @Override
-    public ArgumentImpl setDefault(FeatureControl ctrl) {
-        defaultControl_ = ctrl;
         return this;
     }
 
@@ -476,11 +456,9 @@ public final class ArgumentImpl implements Argument {
     }
 
     public void run(ArgumentParserImpl parser, Map<String, Object> res,
-            String flag, Object value) throws ArgumentParserException {
+                    String flag, Object value) throws ArgumentParserException {
         action_.run(parser, this, res, flag, value);
     }
-
-    // Getter methods
 
     @Override
     public String getDest() {
@@ -490,6 +468,15 @@ public final class ArgumentImpl implements Argument {
     @Override
     public Object getConst() {
         return const_;
+    }
+
+    // Getter methods
+
+    @Override
+    public <E> ArgumentImpl setConst(E... values) {
+        // Allow null
+        const_ = Arrays.asList(values);
+        return this;
     }
 
     @Override
@@ -502,6 +489,12 @@ public final class ArgumentImpl implements Argument {
         } else {
             return default_;
         }
+    }
+
+    @Override
+    public ArgumentImpl setDefault(FeatureControl ctrl) {
+        defaultControl_ = ctrl;
+        return this;
     }
 
     @Override

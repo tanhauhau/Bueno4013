@@ -41,20 +41,23 @@ public class PrefixPattern {
 
     /**
      * Creates this object using given {@code prefixChars}.
-     * 
-     * @param prefixChars
-     *            The prefixChars
+     *
+     * @param prefixChars The prefixChars
      */
     public PrefixPattern(String prefixChars) {
         prefixChars_ = prefixChars;
         prefixPattern_ = compilePrefixPattern(prefixChars);
     }
 
+    private static Pattern compilePrefixPattern(String prefixChars) {
+        String qs = Pattern.quote(prefixChars);
+        return Pattern.compile("^[" + qs + "]+");
+    }
+
     /**
      * Returns {@code true} if flag string {@code str} matches prefixChars.
-     * 
-     * @param str
-     *            The flag string to match
+     *
+     * @param str The flag string to match
      * @return {@code true} or {@code false}
      */
     public boolean match(String str) {
@@ -65,9 +68,8 @@ public class PrefixPattern {
     /**
      * Returns {@code true} if flag string {@code str} matches prefixChars and
      * it is long flag.
-     * 
-     * @param str
-     *            The flag string to match
+     *
+     * @param str The flag string to match
      * @return {@code true} or {@code false}
      */
     public boolean matchLongFlag(String str) {
@@ -78,9 +80,8 @@ public class PrefixPattern {
     /**
      * Returns {@code true} if flag string {@code str} matches prefixChars and
      * it is short flag, that is, its matched prefix length must be 1.
-     * 
-     * @param str
-     *            The flag string to match
+     *
+     * @param str The flag string to match
      * @return {@code true} or {@code false}
      */
     public boolean matchShortFlag(String str) {
@@ -95,9 +96,8 @@ public class PrefixPattern {
      * <p>
      * If given flag string does not contains prefixChars, it is returned as is.
      * </p>
-     * 
-     * @param str
-     *            The flag string
+     *
+     * @param str The flag string
      * @return The string after prefixChars are removed from {@code str}
      */
     public String removePrefix(String str) {
@@ -111,7 +111,7 @@ public class PrefixPattern {
 
     /**
      * Returns prefixChars with this object constructed.
-     * 
+     *
      * @return prefixChars
      */
     public String getPrefixChars() {
@@ -120,16 +120,11 @@ public class PrefixPattern {
 
     /**
      * Returns compiled regular expression pattern of prefixChars.
-     * 
+     *
      * @return The compiled regular expression pattern of prefixChars.
      */
     public Pattern getPrefixPattern() {
         return prefixPattern_;
-    }
-
-    private static Pattern compilePrefixPattern(String prefixChars) {
-        String qs = Pattern.quote(prefixChars);
-        return Pattern.compile("^[" + qs + "]+");
     }
 
 }

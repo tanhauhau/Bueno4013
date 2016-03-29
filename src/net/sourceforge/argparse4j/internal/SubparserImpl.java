@@ -23,24 +23,17 @@
  */
 package net.sourceforge.argparse4j.internal;
 
+import net.sourceforge.argparse4j.helper.TextHelper;
+import net.sourceforge.argparse4j.helper.TextWidthCounter;
+import net.sourceforge.argparse4j.inf.*;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.argparse4j.helper.TextHelper;
-import net.sourceforge.argparse4j.helper.TextWidthCounter;
-import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentGroup;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.MutuallyExclusiveGroup;
-import net.sourceforge.argparse4j.inf.Namespace;
-import net.sourceforge.argparse4j.inf.Subparser;
-import net.sourceforge.argparse4j.inf.Subparsers;
-
 /**
  * <strong>The application code must not use this class directly.</strong>
- * 
  */
 public final class SubparserImpl implements Subparser {
 
@@ -50,8 +43,8 @@ public final class SubparserImpl implements Subparser {
     private String help_ = "";
 
     public SubparserImpl(String prog, boolean addHelp, String prefixChars,
-            String fromFilePrefix, TextWidthCounter textWidthCounter,
-            String command, ArgumentParserImpl mainParser) {
+                         String fromFilePrefix, TextWidthCounter textWidthCounter,
+                         String command, ArgumentParserImpl mainParser) {
         command_ = command;
         parser_ = new ArgumentParserImpl(prog, addHelp, prefixChars,
                 fromFilePrefix, textWidthCounter, command, mainParser);
@@ -204,7 +197,7 @@ public final class SubparserImpl implements Subparser {
 
     @Override
     public void parseArgs(String[] args, Map<String, Object> attrs,
-            Object userData) throws ArgumentParserException {
+                          Object userData) throws ArgumentParserException {
         parser_.parseArgs(args, attrs, userData);
     }
 
@@ -221,19 +214,19 @@ public final class SubparserImpl implements Subparser {
 
     @Override
     public void parseKnownArgs(String[] args, List<String> unknown,
-            Map<String, Object> attrs) throws ArgumentParserException {
+                               Map<String, Object> attrs) throws ArgumentParserException {
         parser_.parseKnownArgs(args, unknown, attrs);
     }
 
     @Override
     public void parseKnownArgs(String[] args, List<String> unknown,
-            Object userData) throws ArgumentParserException {
+                               Object userData) throws ArgumentParserException {
         parser_.parseKnownArgs(args, unknown, userData);
     }
 
     @Override
     public void parseKnownArgs(String[] args, List<String> unknown,
-            Map<String, Object> attrs, Object userData)
+                               Map<String, Object> attrs, Object userData)
             throws ArgumentParserException {
         parser_.parseKnownArgs(args, unknown, attrs, userData);
     }

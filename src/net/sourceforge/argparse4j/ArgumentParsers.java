@@ -23,10 +23,6 @@
  */
 package net.sourceforge.argparse4j;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
 import net.sourceforge.argparse4j.helper.ASCIITextWidthCounter;
 import net.sourceforge.argparse4j.helper.CJKTextWidthCounter;
 import net.sourceforge.argparse4j.inf.Argument;
@@ -34,11 +30,30 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.internal.ArgumentParserImpl;
 import net.sourceforge.argparse4j.internal.TerminalWidth;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * Factory class to create new ArgumentParser.
- * 
  */
 public final class ArgumentParsers {
+
+    /**
+     * Default prefix characters.
+     */
+    public static final String DEFAULT_PREFIX_CHARS = "-";
+    /**
+     * Default format width of text output.
+     */
+    public static final int DEFAULT_FORMAT_WIDTH = 75;
+    private static final String cjkWidthLangsSrc_[] = {"ja", "zh", "ko"};
+    private static List<String> cjkWidthLangs_ = Arrays
+            .asList(cjkWidthLangsSrc_);
+    private static boolean cjkWidthHack_ = true;
+    private static boolean terminalWidthDetection_ = true;
+    private static boolean singleMetavar_ = false;
+    private static boolean noDestConversionForPositionalArgs_ = false;
 
     /**
      * Intentionally made private to avoid to get instantiated in application
@@ -48,21 +63,15 @@ public final class ArgumentParsers {
     }
 
     /**
-     * Default prefix characters.
-     */
-    public static final String DEFAULT_PREFIX_CHARS = "-";
-
-    /**
      * <p>
      * Creates {@link ArgumentParser} with given program name.
      * </p>
-     * 
+     * <p/>
      * <p>
      * This is equivalent with {@code newArgumentParser(prog, true, "-", null)}.
      * </p>
-     * 
-     * @param prog
-     *            The program name
+     *
+     * @param prog The program name
      * @return ArgumentParser object
      */
     public static ArgumentParser newArgumentParser(String prog) {
@@ -73,16 +82,14 @@ public final class ArgumentParsers {
      * <p>
      * Creates {@link ArgumentParser} with given program name and addHelp.
      * </p>
-     * 
+     * <p/>
      * <p>
      * This is equivalent with {@code ArgumentParser(prog, addHelp, "-", null)}.
      * </p>
-     * 
-     * @param prog
-     *            The program name
-     * @param addHelp
-     *            If true, {@code -h/--help} are available. If false, they are
-     *            not.
+     *
+     * @param prog    The program name
+     * @param addHelp If true, {@code -h/--help} are available. If false, they are
+     *                not.
      * @return ArgumentParser object
      */
     public static ArgumentParser newArgumentParser(String prog, boolean addHelp) {
@@ -94,23 +101,20 @@ public final class ArgumentParsers {
      * Creates {@link ArgumentParser} with given program name, addHelp and
      * prefixChars.
      * </p>
-     * 
+     * <p/>
      * <p>
      * This is equivalent with
      * {@code ArgumentParser(prog, addHelp, prefixChars, null)}.
      * </p>
-     * 
-     * @param prog
-     *            The program name
-     * @param addHelp
-     *            If true, {@code -h/--help} are available. If false, they are
-     *            not.
-     * @param prefixChars
-     *            The set of characters that prefix optional arguments.
+     *
+     * @param prog        The program name
+     * @param addHelp     If true, {@code -h/--help} are available. If false, they are
+     *                    not.
+     * @param prefixChars The set of characters that prefix optional arguments.
      * @return ArgumentParser object.
      */
     public static ArgumentParser newArgumentParser(String prog,
-            boolean addHelp, String prefixChars) {
+                                                   boolean addHelp, String prefixChars) {
         return newArgumentParser(prog, addHelp, prefixChars, null);
     }
 
@@ -119,49 +123,38 @@ public final class ArgumentParsers {
      * Creates {@link ArgumentParser} with given program name, addHelp and
      * prefixChars.
      * </p>
-     * 
-     * @param prog
-     *            The program name
-     * @param addHelp
-     *            If true, {@code -h/--help} are available. If false, they are
-     *            not.
-     * @param prefixChars
-     *            The set of characters that prefix optional arguments.
-     * @param fromFilePrefix
-     *            The set of characters that prefix file path from which
-     *            additional arguments should be read. Specify {@code null} to
-     *            disable reading arguments from file.
+     *
+     * @param prog           The program name
+     * @param addHelp        If true, {@code -h/--help} are available. If false, they are
+     *                       not.
+     * @param prefixChars    The set of characters that prefix optional arguments.
+     * @param fromFilePrefix The set of characters that prefix file path from which
+     *                       additional arguments should be read. Specify {@code null} to
+     *                       disable reading arguments from file.
      * @return ArgumentParser object.
      */
     public static ArgumentParser newArgumentParser(String prog,
-            boolean addHelp, String prefixChars, String fromFilePrefix) {
+                                                   boolean addHelp, String prefixChars, String fromFilePrefix) {
         return new ArgumentParserImpl(prog, addHelp, prefixChars,
                 fromFilePrefix, cjkWidthHack_
-                        && cjkWidthLangs_.contains(Locale.getDefault()
-                                .getLanguage()) ? new CJKTextWidthCounter()
-                        : new ASCIITextWidthCounter());
+                && cjkWidthLangs_.contains(Locale.getDefault()
+                .getLanguage()) ? new CJKTextWidthCounter()
+                : new ASCIITextWidthCounter());
     }
-
-    private static final String cjkWidthLangsSrc_[] = { "ja", "zh", "ko" };
-    private static List<String> cjkWidthLangs_ = Arrays
-            .asList(cjkWidthLangsSrc_);
-
-    private static boolean cjkWidthHack_ = true;
 
     /**
      * <p>
      * Set {@code true} to enable CJK width hack.
      * </p>
-     * 
+     * <p/>
      * <p>
      * The CJK width hack is treat Unicode characters having East Asian Width
      * property Wide/Full/Ambiguous to have twice a width of ascii characters
      * when formatting help message if locale is "ja", "zh" or "ko". This
      * feature is enabled by default.
      * </p>
-     * 
-     * @param flag
-     *            {@code true} or {@code false}
+     *
+     * @param flag {@code true} or {@code false}
      */
     public static void setCJKWidthHack(boolean flag) {
         cjkWidthHack_ = flag;
@@ -169,35 +162,16 @@ public final class ArgumentParsers {
 
     /**
      * Returns true iff CJK width hack is enabled.
-     * 
+     *
      * @return {@code true} or {@code false}
      */
     public static boolean getCjkWidthHack() {
         return cjkWidthHack_;
     }
 
-    private static boolean terminalWidthDetection_ = true;
-
-    /**
-     * <p>
-     * Set {@code true} to enable terminal width detection.
-     * </p>
-     * 
-     * <p>
-     * If this feature is enabled, argparse4j will automatically detect the
-     * terminal width and use it to format help messages.
-     * </p>
-     * 
-     * @param flag
-     *            {@code true} or {@code false}
-     */
-    public static void setTerminalWidthDetection(boolean flag) {
-        terminalWidthDetection_ = flag;
-    }
-
     /**
      * Returns true iff terminal width detection is enabled.
-     * 
+     *
      * @return {@code true} or {@code false}
      */
     public static boolean getTerminalWidthDetection() {
@@ -205,16 +179,27 @@ public final class ArgumentParsers {
     }
 
     /**
-     * Default format width of text output.
+     * <p>
+     * Set {@code true} to enable terminal width detection.
+     * </p>
+     * <p/>
+     * <p>
+     * If this feature is enabled, argparse4j will automatically detect the
+     * terminal width and use it to format help messages.
+     * </p>
+     *
+     * @param flag {@code true} or {@code false}
      */
-    public static final int DEFAULT_FORMAT_WIDTH = 75;
+    public static void setTerminalWidthDetection(boolean flag) {
+        terminalWidthDetection_ = flag;
+    }
 
     /**
      * Returns the width of formatted text. If the terminal width detection is
      * enabled, this method will detect the terminal width automatically and
      * calculate the width based on it. If it is not enabled or auto-detection
      * was failed, the {@link ArgumentParsers#DEFAULT_FORMAT_WIDTH} is returned.
-     * 
+     *
      * @return the width of formatted text
      */
     public static int getFormatWidth() {
@@ -226,7 +211,14 @@ public final class ArgumentParsers {
         }
     }
 
-    private static boolean singleMetavar_ = false;
+    /**
+     * Returns true iff a metavar is shown only after the last flag.
+     *
+     * @return {@code true} or {@code false}
+     */
+    public static boolean isSingleMetavar() {
+        return singleMetavar_;
+    }
 
     /**
      * <p>
@@ -237,7 +229,7 @@ public final class ArgumentParsers {
      * By default and {@code false} is given to this method, a metavar is shown
      * after each flag:
      * </p>
-     * 
+     * <p/>
      * <pre>
      * -f FOO, --foo FOO
      * </pre>
@@ -245,42 +237,34 @@ public final class ArgumentParsers {
      * If {@code true} is given to this method, a metavar string is shown only
      * once:
      * </p>
-     * 
+     * <p/>
      * <pre>
      * -f, --foo FOO
      * </pre>
-     * 
-     * @param singleMetavar
-     *            Switch to display a metavar only after the last flag.
+     *
+     * @param singleMetavar Switch to display a metavar only after the last flag.
      */
     public static void setSingleMetavar(boolean singleMetavar) {
         singleMetavar_ = singleMetavar;
     }
 
-    /**
-     * Returns true iff a metavar is shown only after the last flag.
-     * 
-     * @return {@code true} or {@code false}
-     */
-    public static boolean isSingleMetavar() {
-        return singleMetavar_;
+    public static boolean getNoDestConversionForPositionalArgs() {
+        return noDestConversionForPositionalArgs_;
     }
-
-    private static boolean noDestConversionForPositionalArgs_ = false;
 
     /**
      * <p>
      * Do not perform any conversion to produce "dest" value (See
      * {@link Argument#getDest()}) from positional argument name.
      * </p>
-     * 
+     * <p/>
      * <p>
      * Prior 0.5.0, no conversion is made to produce "dest" value from
      * positional argument name. Since 0.5.0, "dest" value is generated by
      * replacing "-" with "_" in positional argument name. This is the same
      * conversion rule for optional arguments.
      * </p>
-     * 
+     * <p/>
      * <p>
      * By default, this is set to {@code false} (which means, conversion will be
      * done). Application is advised to update its implementation to cope with
@@ -288,20 +272,13 @@ public final class ArgumentParsers {
      * {@code true} to turn off the conversion and retain the same behaviour
      * with pre-0.5.0 version.
      * </p>
-     * 
-     * @param flag
-     *            Switch not to perform conversion to produce dest for
-     *            positional arguments. If {@code true} is given, no conversion
-     *            is made.
+     *
+     * @param flag Switch not to perform conversion to produce dest for
+     *             positional arguments. If {@code true} is given, no conversion
+     *             is made.
      */
-    public static void setNoDestConversionForPositionalArgs(boolean flag)
-    {
+    public static void setNoDestConversionForPositionalArgs(boolean flag) {
         noDestConversionForPositionalArgs_ = flag;
-    }
-
-    public static boolean getNoDestConversionForPositionalArgs()
-    {
-        return noDestConversionForPositionalArgs_;
     }
 
 }

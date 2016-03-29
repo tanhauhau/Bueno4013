@@ -23,23 +23,19 @@
  */
 package net.sourceforge.argparse4j.impl.type;
 
+import net.sourceforge.argparse4j.helper.TextHelper;
+import net.sourceforge.argparse4j.impl.Arguments;
+import net.sourceforge.argparse4j.inf.*;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-
-import net.sourceforge.argparse4j.helper.TextHelper;
-import net.sourceforge.argparse4j.impl.Arguments;
-import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentParser;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.ArgumentType;
-import net.sourceforge.argparse4j.inf.MetavarInference;
 
 /**
  * <p>
  * This implementation converts String value into given type using type's
  * {@code valueOf(java.lang.String)} static method or its constructor.
- * 
+ * <p/>
  * This class implements {@link MetavarInference} interface, and performs
  * special handling when {@link Boolean} class is passed to the constructor. In
  * that case, {@link ReflectArgumentType#inferMetavar()} returns convenient
@@ -84,9 +80,8 @@ public class ReflectArgumentType<T> implements ArgumentType<T>,
      * account {@link Enum#toString()} on conversion, use
      * {@link Arguments#enumStringType(Class)} instead.
      * </p>
-     * 
-     * @param type
-     *            The type String value should be converted to.
+     *
+     * @param type The type String value should be converted to.
      */
     public ReflectArgumentType(Class<T> type) {
         type_ = type;
@@ -137,7 +132,7 @@ public class ReflectArgumentType<T> implements ArgumentType<T>,
     }
 
     private T convertUsingConstructor(ArgumentParser parser, Argument arg,
-            String value) throws ArgumentParserException {
+                                      String value) throws ArgumentParserException {
         T obj = null;
         try {
             obj = type_.getConstructor(String.class).newInstance(value);
@@ -155,7 +150,7 @@ public class ReflectArgumentType<T> implements ArgumentType<T>,
     }
 
     private void throwArgumentParserException(ArgumentParser parser,
-            Argument arg, String value, Throwable t)
+                                              Argument arg, String value, Throwable t)
             throws ArgumentParserException {
         throw new ArgumentParserException(String.format(TextHelper.LOCALE_ROOT,
                 "could not convert '%s' to %s (%s)", value,
@@ -184,15 +179,15 @@ public class ReflectArgumentType<T> implements ArgumentType<T>,
      * <p>
      * Otherwise, returns null.
      * </p>
-     * 
+     *
      * @see net.sourceforge.argparse4j.inf.MetavarInference#inferMetavar()
      * @since 0.7.0
      */
     @Override
     public String[] inferMetavar() {
         if (Boolean.class.equals(type_)) {
-            return new String[] { TextHelper.concat(new String[] { "true",
-                    "false" }, 0, ",", "{", "}") };
+            return new String[]{TextHelper.concat(new String[]{"true",
+                    "false"}, 0, ",", "{", "}")};
         }
 
         if (type_.isEnum()) {
@@ -202,7 +197,7 @@ public class ReflectArgumentType<T> implements ArgumentType<T>,
             for (T t : enumConstants) {
                 names[i++] = ((Enum<?>) t).name();
             }
-            return new String[] { TextHelper.concat(names, 0, ",", "{", "}") };
+            return new String[]{TextHelper.concat(names, 0, ",", "{", "}")};
         }
 
         return null;

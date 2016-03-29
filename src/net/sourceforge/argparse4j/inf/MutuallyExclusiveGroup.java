@@ -27,9 +27,8 @@ public interface MutuallyExclusiveGroup {
 
     /**
      * Sets description to customize help message of this group.
-     * 
-     * @param description
-     *            The description of this group.
+     *
+     * @param description The description of this group.
      * @return this
      */
     MutuallyExclusiveGroup description(String description);
@@ -42,9 +41,8 @@ public interface MutuallyExclusiveGroup {
      * <p>
      * See {@link ArgumentParser#addArgument(String...)} for details.
      * </p>
-     * 
-     * @param nameOrFlags
-     *            A name or a list of option strings of new {@link Argument}.
+     *
+     * @param nameOrFlags A name or a list of option strings of new {@link Argument}.
      * @return {@link Argument} object.
      */
     Argument addArgument(String... nameOrFlags);
@@ -57,9 +55,8 @@ public interface MutuallyExclusiveGroup {
      * <p>
      * The default value is {@code false}.
      * </p>
-     * 
-     * @param required
-     *            {@code true} or {@code false}
+     *
+     * @param required {@code true} or {@code false}
      * @return this
      */
     MutuallyExclusiveGroup required(boolean required);

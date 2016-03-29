@@ -1,8 +1,8 @@
 package com;
 
 import com.client.Client;
-import com.client.cache.FileCache;
 import com.client.cache.Cache;
+import com.client.cache.FileCache;
 import com.client.strategy.*;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -25,45 +25,43 @@ public class Main {
         final int socketTimeout = ns.getInt("timeout");
         final String cacheFolder = ns.getString("folder");
         final int cacheFreshness = ns.getInt("cachefresh");
-        final boolean showConsoleInfo = ns.getBoolean("info");
 
         //show or hide info
-        Console.showInfo = showConsoleInfo;
+        Console.showInfo = ns.getBoolean("info");
         Console console = new Console(new Scanner(System.in));
 
         Client client = null;
         Cache cache = new FileCache(cacheFolder, cacheFreshness);
         try {
             client = new Client(socketIPAddress, socketPort, socketTimeout * 1000)
-                        .use(1, new PingStrategy())
-                        .use(2, new ReadingStrategy())
-                        .use(3, new WritingStrategy())
-                        .use(4, new RegisterStrategy(cache))
-                        .use(5, new SizeStrategy())
-                        .use(6, new DoubleStrategy())
-                        .use(7, new LastModifiedStrategy())
-                        .use(8, new CacheStrategy(cache))
-                        .use(9, new CacheReadingStrategy(cache))
-                        .use(10, new CacheWritingStrategy(cache))
-                        .use(11, new CacheDetailStrategy(cache));
+                    .use(1, new PingStrategy())
+                    .use(2, new ReadingStrategy())
+                    .use(3, new WritingStrategy())
+                    .use(4, new RegisterStrategy(cache))
+                    .use(5, new SizeStrategy())
+                    .use(6, new DoubleStrategy())
+                    .use(7, new LastModifiedStrategy())
+                    .use(8, new CacheStrategy(cache))
+                    .use(9, new CacheReadingStrategy(cache))
+                    .use(10, new CacheWritingStrategy(cache))
+                    .use(11, new CacheDetailStrategy(cache));
 
             if (ns.getInt("lag") > 0) {
                 client.makeItLag(ns.getInt("lag"));
             }
-            if (ns.getDouble("gibberish") > 0){
+            if (ns.getDouble("gibberish") > 0) {
                 client.makeItSendGibberish(1 - Math.max(1, ns.getDouble("gibberish")));
             }
-            if (ns.getDouble("send") > 0){
+            if (ns.getDouble("send") > 0) {
                 client.makeItPacketLossWhenSending(1 - Math.max(1, ns.getDouble("send")));
             }
-            if (ns.getDouble("send") > 0){
+            if (ns.getDouble("send") > 0) {
                 client.makeItPacketLossWhenReceiving(1 - Math.max(1, ns.getDouble("receive")));
             }
-                                    ;
-            mainLoop: while(true) {
+            while (true) {
                 int option = printMenu(console, client);
-                if (option == 99){
-                    break mainLoop;
+                if (option == 99) {
+                    break;
                 }
                 //execute
                 client.execute(option, console);
@@ -71,18 +69,19 @@ public class Main {
                 System.out.println();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Console.info("Fuck why got error!!! CiBaI");
             e.printStackTrace();
-        }finally {
-            if (client != null){
+        } finally {
+            if (client != null) {
                 client.stop();
             }
         }
     }
-    public static int printMenu(Console scanner, Client client){
+
+    private static int printMenu(Console scanner, Client client) {
         int option = -1;
-        while(option <= 0 || option > 99) {
+        while (option <= 0 || option > 99) {
             Console.println("=== This is the main menu of Bobo ===");
             Console.println("Choose any of the following option");
             client.printMenu();
@@ -115,7 +114,7 @@ public class Main {
                 .type(Integer.class)
                 .required(true)
                 .help("Freshness of cache in second");
-        parser.addArgument("-l","--lag")
+        parser.addArgument("-l", "--lag")
                 .type(Integer.class)
                 .required(false)
                 .setDefault(0)

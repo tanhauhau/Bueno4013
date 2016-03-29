@@ -23,17 +23,17 @@
  */
 package net.sourceforge.argparse4j.internal;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sourceforge.argparse4j.helper.TextHelper;
 import net.sourceforge.argparse4j.inf.ArgumentGroup;
 import net.sourceforge.argparse4j.inf.MutuallyExclusiveGroup;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <strong>The application code must not use this class directly.</strong>
- * 
+ * <p/>
  * This class implements both mutually exclusive group and just a conceptual
  * group.
  */
@@ -126,9 +126,9 @@ public final class ArgumentGroupImpl implements ArgumentGroup,
     /**
      * Returns true if the help message for this group should be in separate
      * group.
-     * 
+     *
      * @return true if the help message for this group should be in separate
-     *         group.
+     * group.
      */
     public boolean isSeparateHelp() {
         return !mutex_ || !title_.isEmpty() || !description_.isEmpty();

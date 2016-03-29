@@ -29,8 +29,8 @@ public class WritingStrategy extends Strategy {
      * client to read a certain file from server
      * This method does not utilize cache
      *
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
 
@@ -55,7 +55,7 @@ public class WritingStrategy extends Strategy {
 
         if (isStatusOK(result)) {
             Console.println("  WritingStrategy >> write success");
-        }else{
+        } else {
             Console.println("  WritingStrategy >> write failed");
         }
     }

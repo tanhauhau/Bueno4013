@@ -19,8 +19,9 @@ public class LossSendSocket extends WrapperSocket {
 
     /**
      * Class Constructor for LossSendSocket
-     * @param socket            Socket Used for communication
-     * @param probability       Probability of Packet Loss during Sending
+     *
+     * @param socket      Socket Used for communication
+     * @param probability Probability of Packet Loss during Sending
      */
     public LossSendSocket(Socket socket, double probability) {
         super(socket);
@@ -34,35 +35,35 @@ public class LossSendSocket extends WrapperSocket {
      * test the at-most-one and also at least one
      * implementation especially
      *
-     * @param pack              Marshalling object
-     * @param address           IP Address
-     * @param port              Port used for communication between server and client
+     * @param pack    Marshalling object
+     * @param address IP Address
+     * @param port    Port used for communication between server and client
      * @throws IOException
      */
     @Override
     public void send(Pack pack, InetAddress address, int port) throws IOException {
-        if (random.nextDouble() < this.prob){
+        if (random.nextDouble() < this.prob) {
             super.send(pack, address, port);
-        }else{
+        } else {
             //sleep for a while, or else too fast
             try {
                 Thread.sleep(1000);
                 Console.info("  LossSendSocket >> Fake Packet Loss when sending");
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
 
     @Override
     public void send(DatagramPacket p) throws IOException {
-        if (random.nextDouble() < this.prob){
+        if (random.nextDouble() < this.prob) {
             super.send(p);
-        }else{
+        } else {
             //sleep for a while, or else too fast
             try {
                 Thread.sleep(1000);
                 Console.info("  LossSendSocket >> Fake Packet Loss when sending");
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }

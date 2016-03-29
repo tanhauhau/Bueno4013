@@ -23,12 +23,12 @@
  */
 package net.sourceforge.argparse4j.inf;
 
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.annotation.Arg;
+
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
-
-import net.sourceforge.argparse4j.ArgumentParsers;
-import net.sourceforge.argparse4j.annotation.Arg;
 
 /**
  * <p>
@@ -60,9 +60,8 @@ public interface ArgumentParser {
      * a list of option strings for optional argument, e.g. {@code foo} or
      * {@code -f, --foo}.
      * </p>
-     * 
-     * @param nameOrFlags
-     *            A name or a list of option strings of new {@link Argument}.
+     *
+     * @param nameOrFlags A name or a list of option strings of new {@link Argument}.
      * @return {@link Argument} object.
      */
     Argument addArgument(String... nameOrFlags);
@@ -77,9 +76,8 @@ public interface ArgumentParser {
      * {@link ArgumentGroup} provides a way to conceptually group up command
      * line arguments.
      * </p>
-     * 
-     * @param title
-     *            The title printed in help message.
+     *
+     * @param title The title printed in help message.
      * @return {@link ArgumentGroup} object.
      */
     ArgumentGroup addArgumentGroup(String title);
@@ -89,7 +87,7 @@ public interface ArgumentParser {
      * Creates new mutually exclusive group, {@link MutuallyExclusiveGroup}
      * object, without title and adds to this parser and returns the object.
      * </p>
-     * 
+     *
      * @return {@link MutuallyExclusiveGroup} object.
      */
     MutuallyExclusiveGroup addMutuallyExclusiveGroup();
@@ -105,9 +103,8 @@ public interface ArgumentParser {
      * reported. The {@code title} is printed in help message as a title of this
      * group.
      * </p>
-     * 
-     * @param title
-     *            The title printed in help message.
+     *
+     * @param title The title printed in help message.
      * @return The {@link MutuallyExclusiveGroup} object.
      */
     MutuallyExclusiveGroup addMutuallyExclusiveGroup(String title);
@@ -122,7 +119,7 @@ public interface ArgumentParser {
      * always returns same {@link Subparsers} object. {@link Subparsers} object
      * provides a way to add sub-commands.
      * </p>
-     * 
+     *
      * @return {@link Subparsers} object.
      */
     Subparsers addSubparsers();
@@ -137,27 +134,24 @@ public interface ArgumentParser {
      * with the program name given in
      * {@link ArgumentParsers#newArgumentParser(String)}.
      * </p>
-     * 
-     * @param usage
-     *            usage text
+     *
+     * @param usage usage text
      * @return this
      */
     ArgumentParser usage(String usage);
 
     /**
      * Sets the text to display before the argument help.
-     * 
-     * @param description
-     *            The text to display before the argument help.
+     *
+     * @param description The text to display before the argument help.
      * @return this
      */
     ArgumentParser description(String description);
 
     /**
      * Sets the text to display after the argument help.
-     * 
-     * @param epilog
-     *            The text to display after the argument help.
+     *
+     * @param epilog The text to display after the argument help.
      * @return this
      */
     ArgumentParser epilog(String epilog);
@@ -172,9 +166,8 @@ public interface ArgumentParser {
      * {@link ArgumentParsers#newArgumentParser(String)}. This processed text
      * will be printed without text-wrapping.
      * </p>
-     * 
-     * @param version
-     *            The version string.
+     *
+     * @param version The version string.
      * @return this
      */
     ArgumentParser version(String version);
@@ -187,9 +180,8 @@ public interface ArgumentParser {
      * <p>
      * By default, the default values are not printed in help message.
      * </p>
-     * 
-     * @param defaultHelp
-     *            Switch to display the default value in help message.
+     *
+     * @param defaultHelp Switch to display the default value in help message.
      * @return this
      */
     ArgumentParser defaultHelp(boolean defaultHelp);
@@ -201,15 +193,14 @@ public interface ArgumentParser {
 
     /**
      * Prints help message in writer.
-     * 
-     * @param writer
-     *            Writer to print message.
+     *
+     * @param writer Writer to print message.
      */
     void printHelp(PrintWriter writer);
 
     /**
      * Returns help message.
-     * 
+     *
      * @return The help message.
      */
     String formatHelp();
@@ -223,16 +214,15 @@ public interface ArgumentParser {
     /**
      * Print a brief description of how the program should be invoked on the
      * command line in writer.
-     * 
-     * @param writer
-     *            Writer to print message.
+     *
+     * @param writer Writer to print message.
      */
     void printUsage(PrintWriter writer);
 
     /**
      * Returns a brief description of how the program should be invoked on the
      * command line.
-     * 
+     *
      * @return Usage text.
      */
     String formatUsage();
@@ -244,15 +234,14 @@ public interface ArgumentParser {
 
     /**
      * Prints version string in writer.
-     * 
-     * @param writer
-     *            Writer to print version string.
+     *
+     * @param writer Writer to print version string.
      */
     void printVersion(PrintWriter writer);
 
     /**
      * Returns version string.
-     * 
+     *
      * @return The version string.
      */
     String formatVersion();
@@ -264,11 +253,9 @@ public interface ArgumentParser {
      * <p>
      * The parser-level defaults always override argument-level defaults.
      * </p>
-     * 
-     * @param dest
-     *            The attribute name.
-     * @param value
-     *            The default value.
+     *
+     * @param dest  The attribute name.
+     * @param value The default value.
      * @return this
      */
     ArgumentParser setDefault(String dest, Object value);
@@ -282,9 +269,8 @@ public interface ArgumentParser {
      * defaults. The parser-level defaults always override argument-level
      * defaults.
      * </p>
-     * 
-     * @param attrs
-     *            The parser-level default values to add.
+     *
+     * @param attrs The parser-level default values to add.
      * @return this
      */
     ArgumentParser setDefaults(Map<String, Object> attrs);
@@ -302,9 +288,8 @@ public interface ArgumentParser {
      * then check parser-level defaults. If no default value is found, returns
      * {@code null}.
      * </p>
-     * 
-     * @param dest
-     *            The attribute name of default value to get.
+     *
+     * @param dest The attribute name of default value to get.
      * @return The default value of given dest.
      */
     Object getDefault(String dest);
@@ -318,11 +303,10 @@ public interface ArgumentParser {
      * {@link #handleError }. If the arguments can be successfully parsed, the
      * resulted attributes are returned as a {@link Namespace} object.
      * Otherwise, the program exits with a <code>1</code> return code.
-     * 
+     * <p/>
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
+     *
+     * @param args Command line arguments.
      * @return {@link Namespace} object.
      */
     Namespace parseArgsOrFail(String args[]);
@@ -336,12 +320,10 @@ public interface ArgumentParser {
      * method must not alter the status of this parser and can be called
      * multiple times.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
+     *
+     * @param args Command line arguments.
      * @return {@link Namespace} object.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     * @throws ArgumentParserException If an error occurred.
      */
     Namespace parseArgs(String args[]) throws ArgumentParserException;
 
@@ -353,13 +335,10 @@ public interface ArgumentParser {
      * Unlike {@link #parseArgs(String[])}, which returns {@link Namespace}
      * object, this method stores attributes in given {@code attrs}.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param attrs
-     *            Map object to store attributes.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     *
+     * @param args  Command line arguments.
+     * @param attrs Map object to store attributes.
+     * @throws ArgumentParserException If an error occurred.
      */
     void parseArgs(String[] args, Map<String, Object> attrs)
             throws ArgumentParserException;
@@ -377,13 +356,10 @@ public interface ArgumentParser {
      * generic array conversion. For example, user can assign
      * {@code List<Integer>} attribute to generic array {@code int[]}.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param userData
-     *            Object to store attributes.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     *
+     * @param args     Command line arguments.
+     * @param userData Object to store attributes.
+     * @throws ArgumentParserException If an error occurred.
      */
     void parseArgs(String[] args, Object userData)
             throws ArgumentParserException;
@@ -398,15 +374,11 @@ public interface ArgumentParser {
      * in {@code attrs}. The attributes specified in {@link Arg} annotations
      * will be also stored in {@code userData}.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param attrs
-     *            Map to store attributes.
-     * @param userData
-     *            Object to store attributes.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     *
+     * @param args     Command line arguments.
+     * @param attrs    Map to store attributes.
+     * @param userData Object to store attributes.
+     * @throws ArgumentParserException If an error occurred.
      */
     void parseArgs(String[] args, Map<String, Object> attrs, Object userData)
             throws ArgumentParserException;
@@ -417,11 +389,9 @@ public interface ArgumentParser {
      * arguments without throwing exception for unrecognized arguments. If
      * {@code unknown} is not null, unrecognized arguments will be stored in it.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param unknown
-     *            Output variable to store unrecognized arguments, or null
+     *
+     * @param args    Command line arguments.
+     * @param unknown Output variable to store unrecognized arguments, or null
      * @return {@link Namespace} object.
      * @since 0.7.0
      */
@@ -433,14 +403,11 @@ public interface ArgumentParser {
      * without throwing exception for unrecognized arguments. If {@code unknown}
      * is not null, unrecognized arguments will be stored in it.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param unknown
-     *            Output variable to store unrecognized arguments, or null
+     *
+     * @param args    Command line arguments.
+     * @param unknown Output variable to store unrecognized arguments, or null
      * @return {@link Namespace} object.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     * @throws ArgumentParserException If an error occurred.
      * @since 0.7.0
      */
     Namespace parseKnownArgs(String args[], List<String> unknown)
@@ -452,19 +419,15 @@ public interface ArgumentParser {
      * arguments without throwing exception for unrecognized arguments. If
      * {@code unknown} is not null, unrecognized arguments will be stored in it.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param unknown
-     *            Output variable to store unrecognized arguments, or null
-     * @param attrs
-     *            Map object to store attributes.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     *
+     * @param args    Command line arguments.
+     * @param unknown Output variable to store unrecognized arguments, or null
+     * @param attrs   Map object to store attributes.
+     * @throws ArgumentParserException If an error occurred.
      * @since 0.7.0
      */
     void parseKnownArgs(String[] args, List<String> unknown,
-            Map<String, Object> attrs) throws ArgumentParserException;
+                        Map<String, Object> attrs) throws ArgumentParserException;
 
     /**
      * <p>
@@ -472,15 +435,11 @@ public interface ArgumentParser {
      * arguments without throwing exception for unrecognized arguments. If
      * {@code unknown} is not null, unrecognized arguments will be stored in it.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param unknown
-     *            Output variable to store unrecognized arguments, or null
-     * @param userData
-     *            Object to store attributes.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     *
+     * @param args     Command line arguments.
+     * @param unknown  Output variable to store unrecognized arguments, or null
+     * @param userData Object to store attributes.
+     * @throws ArgumentParserException If an error occurred.
      * @since 0.7.0
      */
     void parseKnownArgs(String[] args, List<String> unknown, Object userData)
@@ -492,21 +451,16 @@ public interface ArgumentParser {
      * known arguments without throwing exception for unrecognized arguments. If
      * {@code unknown} is not null, unrecognized arguments will be stored in it.
      * </p>
-     * 
-     * @param args
-     *            Command line arguments.
-     * @param unknown
-     *            Output variable to store unrecognized arguments, or null
-     * @param attrs
-     *            Map to store attributes.
-     * @param userData
-     *            Object to store attributes.
-     * @throws ArgumentParserException
-     *             If an error occurred.
+     *
+     * @param args     Command line arguments.
+     * @param unknown  Output variable to store unrecognized arguments, or null
+     * @param attrs    Map to store attributes.
+     * @param userData Object to store attributes.
+     * @throws ArgumentParserException If an error occurred.
      * @since 0.7.0
      */
     void parseKnownArgs(String[] args, List<String> unknown,
-            Map<String, Object> attrs, Object userData)
+                        Map<String, Object> attrs, Object userData)
             throws ArgumentParserException;
 
     /**
@@ -516,9 +470,8 @@ public interface ArgumentParser {
      * <p>
      * Please note that this method does not terminate the program.
      * </p>
-     * 
-     * @param e
-     *            Error thrown by {@link #parseArgs(String[])}.
+     *
+     * @param e Error thrown by {@link #parseArgs(String[])}.
      */
     void handleError(ArgumentParserException e);
 }

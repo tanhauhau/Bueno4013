@@ -26,9 +26,9 @@ import java.util.regex.Pattern;
 /**
  * Returns the column width of the command line terminal from which this program
  * was started. Typically the column width is around 80 characters or so.
- * 
+ * <p/>
  * Currently works on Linux and OSX.
- * 
+ * <p/>
  * Returns -1 if the column width cannot be determined for some reason.
  */
 public class TerminalWidth {
@@ -66,7 +66,7 @@ public class TerminalWidth {
                 || osName.startsWith("LINUX");
         if (!isLinux && !isOSX) {
             return UNKNOWN_WIDTH; // actually, this might also work on Solaris
-                                  // but this hasn't been tested
+            // but this hasn't been tested
         }
         ProcessBuilder builder = new ProcessBuilder(which("sh").toString(),
                 "-c", "stty -a < /dev/tty");
@@ -121,12 +121,12 @@ public class TerminalWidth {
     private File which(String cmd) throws IOException {
         String path = System.getenv("PATH");
         if (path != null) {
-          for (String dir : path.split(Pattern.quote(File.pathSeparator))) {
-              File command = new File(dir.trim(), cmd);
-              if (command.canExecute()) {
-                  return command.getAbsoluteFile();
-              }
-          }
+            for (String dir : path.split(Pattern.quote(File.pathSeparator))) {
+                File command = new File(dir.trim(), cmd);
+                if (command.canExecute()) {
+                    return command.getAbsoluteFile();
+                }
+            }
         }
         throw new IOException("No command '" + cmd + "' on path " + path);
     }

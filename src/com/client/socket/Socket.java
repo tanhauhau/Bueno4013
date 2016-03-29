@@ -14,8 +14,12 @@ import java.net.SocketException;
  */
 public interface Socket {
     void send(Pack pack, InetAddress address, int port) throws IOException;
+
     void send(DatagramPacket p) throws IOException;
+
     void receive(DatagramPacket p) throws IOException;
+
     void close();
+
     void setTimeout(int time) throws SocketException;
 }

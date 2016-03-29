@@ -30,7 +30,8 @@ public class RegisterStrategy extends Strategy {
 
     /**
      * Class Constructor for RegisterStrategy Class
-     * @param cache     Cache object on Client's side
+     *
+     * @param cache Cache object on Client's side
      */
     public RegisterStrategy(Cache cache) {
         super(new Unpack.Builder()
@@ -52,8 +53,8 @@ public class RegisterStrategy extends Strategy {
      * if there is any changes in the file, the changes will be
      * shown to the client until timeout
      *
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
@@ -72,10 +73,10 @@ public class RegisterStrategy extends Strategy {
         client.send(request);
 
         Unpack.Result registerResult = keepTryingUntilReceive(client, request, requestID);
-        if (!isStatusOK(registerResult)){
+        if (!isStatusOK(registerResult)) {
             Console.println("  RegisterStrategy >> No Such File");
             return;
-        }else{
+        } else {
             Console.println("  RegisterStrategy >> Start observing file change");
         }
 
@@ -97,11 +98,11 @@ public class RegisterStrategy extends Strategy {
                 OneByteInt status2 = result.getOneByteInt(STATUS2);
 
                 if (!checkValidity(status, status2)) continue;
-                if (data == null)   continue;
+                if (data == null) continue;
 
                 Console.println(String.format("  RegisterStrategy >> DataChanged: '%s'", data)); /* Inform the registered client about the changes made */
                 cache.writeToCache(filename, data);
-            }catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 Console.info("  RegisterStrategy >> Timeout");
             }
         }
@@ -109,7 +110,7 @@ public class RegisterStrategy extends Strategy {
         client.resetTimeout();
     }
 
-    private boolean checkValidity(OneByteInt s1, OneByteInt s2){
+    private boolean checkValidity(OneByteInt s1, OneByteInt s2) {
         return s1 != null && s2 != null && (s1.getValue() & 0XFF) == 0b01010101 && (s2.getValue() & 0XFF) == 0b10101010;
     }
 

@@ -23,39 +23,49 @@
  */
 package net.sourceforge.argparse4j.impl;
 
-import java.util.List;
-
-import net.sourceforge.argparse4j.impl.action.AppendArgumentAction;
-import net.sourceforge.argparse4j.impl.action.AppendConstArgumentAction;
-import net.sourceforge.argparse4j.impl.action.CountArgumentAction;
-import net.sourceforge.argparse4j.impl.action.HelpArgumentAction;
-import net.sourceforge.argparse4j.impl.action.StoreArgumentAction;
-import net.sourceforge.argparse4j.impl.action.StoreConstArgumentAction;
-import net.sourceforge.argparse4j.impl.action.StoreFalseArgumentAction;
-import net.sourceforge.argparse4j.impl.action.StoreTrueArgumentAction;
-import net.sourceforge.argparse4j.impl.action.VersionArgumentAction;
+import net.sourceforge.argparse4j.impl.action.*;
 import net.sourceforge.argparse4j.impl.choice.RangeArgumentChoice;
-import net.sourceforge.argparse4j.impl.type.BooleanArgumentType;
-import net.sourceforge.argparse4j.impl.type.EnumArgumentType;
-import net.sourceforge.argparse4j.impl.type.EnumStringArgumentType;
-import net.sourceforge.argparse4j.impl.type.FileArgumentType;
-import net.sourceforge.argparse4j.impl.type.ReflectArgumentType;
+import net.sourceforge.argparse4j.impl.type.*;
 import net.sourceforge.argparse4j.inf.Argument;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.FeatureControl;
+
+import java.util.List;
 
 /**
  * <p>
  * This class provides useful shortcuts and constants.
  * </p>
- * 
+ * <p/>
  * <p>
  * They are mainly used to specify parameter to {@link Argument} object.
  * </p>
- * 
  */
 public final class Arguments {
 
+    /**
+     * <p>
+     * The value of {@link FeatureControl#SUPPRESS}.
+     * </p>
+     * <p/>
+     * <p>
+     * If value is used with {@link Argument#setDefault(FeatureControl)}, no
+     * attribute is added if the command line argument was not present.
+     * Otherwise, the default value, which defaults to null, will be added to
+     * the object, regardless of the presence of command line argument, returned
+     * by {@link ArgumentParser#parseArgs(String[])}.
+     * </p>
+     */
+    public static final FeatureControl SUPPRESS = FeatureControl.SUPPRESS;
+    private static final StoreArgumentAction store_ = new StoreArgumentAction();
+    private static final StoreTrueArgumentAction storeTrue_ = new StoreTrueArgumentAction();
+    private static final StoreFalseArgumentAction storeFalse_ = new StoreFalseArgumentAction();
+    private static final StoreConstArgumentAction storeConst_ = new StoreConstArgumentAction();
+    private static final AppendArgumentAction append_ = new AppendArgumentAction();
+    private static final AppendConstArgumentAction appendConst_ = new AppendConstArgumentAction();
+    private static final HelpArgumentAction help_ = new HelpArgumentAction();
+    private static final VersionArgumentAction version_ = new VersionArgumentAction();
+    private static final CountArgumentAction count_ = new CountArgumentAction();
     /**
      * Intentionally made private to avoid instantiation in application code.
      */
@@ -70,46 +80,19 @@ public final class Arguments {
      * The value specified in command line will be checked to see whether it
      * fits in given range [min, max], inclusive.
      * </p>
-     * 
-     * @param min
-     *            The lowerbound of the range, inclusive.
-     * @param max
-     *            The upperbound of the range, inclusive.
+     *
+     * @param min The lowerbound of the range, inclusive.
+     * @param max The upperbound of the range, inclusive.
      * @return {@link RangeArgumentChoice} object.
      */
     public static <T extends Comparable<T>> RangeArgumentChoice<T> range(T min,
-            T max) {
+                                                                         T max) {
         return new RangeArgumentChoice<T>(min, max);
     }
 
-    private static final StoreArgumentAction store_ = new StoreArgumentAction();
-    private static final StoreTrueArgumentAction storeTrue_ = new StoreTrueArgumentAction();
-    private static final StoreFalseArgumentAction storeFalse_ = new StoreFalseArgumentAction();
-    private static final StoreConstArgumentAction storeConst_ = new StoreConstArgumentAction();
-    private static final AppendArgumentAction append_ = new AppendArgumentAction();
-    private static final AppendConstArgumentAction appendConst_ = new AppendConstArgumentAction();
-    private static final HelpArgumentAction help_ = new HelpArgumentAction();
-    private static final VersionArgumentAction version_ = new VersionArgumentAction();
-    private static final CountArgumentAction count_ = new CountArgumentAction();
-
-    /**
-     * <p>
-     * The value of {@link FeatureControl#SUPPRESS}.
-     * </p>
-     * 
-     * <p>
-     * If value is used with {@link Argument#setDefault(FeatureControl)}, no
-     * attribute is added if the command line argument was not present.
-     * Otherwise, the default value, which defaults to null, will be added to
-     * the object, regardless of the presence of command line argument, returned
-     * by {@link ArgumentParser#parseArgs(String[])}.
-     * </p>
-     */
-    public static final FeatureControl SUPPRESS = FeatureControl.SUPPRESS;
-
     /**
      * Returns store action.
-     * 
+     *
      * @return {@link StoreArgumentAction} object.
      */
     public static StoreArgumentAction store() {
@@ -120,12 +103,12 @@ public final class Arguments {
      * <p>
      * Returns storeTrue action.
      * </p>
-     * 
+     * <p/>
      * <p>
      * If this action is used, the value specified using
      * {@link Argument#nargs(int)} will be ignored.
      * </p>
-     * 
+     *
      * @return {@link StoreTrueArgumentAction} object.
      */
     public static StoreTrueArgumentAction storeTrue() {
@@ -136,12 +119,12 @@ public final class Arguments {
      * <p>
      * Returns storeFalse action.
      * </p>
-     * 
+     * <p/>
      * <p>
      * If this action is used, the value specified using
      * {@link Argument#nargs(int)} will be ignored.
      * </p>
-     * 
+     *
      * @return {@link StoreFalseArgumentAction} object.
      */
     public static StoreFalseArgumentAction storeFalse() {
@@ -152,12 +135,12 @@ public final class Arguments {
      * <p>
      * Returns storeConst action.
      * </p>
-     * 
+     * <p/>
      * <p>
      * If this action is used, the value specified using
      * {@link Argument#nargs(int)} will be ignored.
      * </p>
-     * 
+     *
      * @return {@link StoreConstArgumentAction} object.
      */
     public static StoreConstArgumentAction storeConst() {
@@ -173,7 +156,7 @@ public final class Arguments {
      * used with {@link Argument#nargs(int)}, the element of List will be List.
      * This is because {@link Argument#nargs(int)} produces List.
      * </p>
-     * 
+     *
      * @return {@link AppendArgumentAction} object.
      */
     public static AppendArgumentAction append() {
@@ -188,7 +171,7 @@ public final class Arguments {
      * If this action is used, the value specified using
      * {@link Argument#nargs(int)} will be ignored.
      * </p>
-     * 
+     *
      * @return {@link AppendConstArgumentAction} object.
      */
     public static AppendConstArgumentAction appendConst() {
@@ -203,7 +186,7 @@ public final class Arguments {
      * This is used for an option printing help message. Please note that this
      * action terminates program after printing help message.
      * </p>
-     * 
+     *
      * @return {@link HelpArgumentAction} object.
      */
     public static HelpArgumentAction help() {
@@ -218,7 +201,7 @@ public final class Arguments {
      * This is used for an option printing version message. Please note that
      * this action terminates program after printing version message.
      * </p>
-     * 
+     *
      * @return {@link VersionArgumentAction} object.
      */
     public static VersionArgumentAction version() {
@@ -233,7 +216,7 @@ public final class Arguments {
      * This action counts the number of occurrence of the option. This action
      * does not consume argument.
      * </p>
-     * 
+     *
      * @return {@link CountArgumentAction} object.
      */
     public static CountArgumentAction count() {
@@ -248,12 +231,10 @@ public final class Arguments {
      * Since enum does not have a constructor with string argument, you cannot
      * use {@link Argument#type(Class)}. Instead use this convenient function.
      * </p>
-     * 
-     * @deprecated
-     * 
-     * @param type
-     *            The enum type
+     *
+     * @param type The enum type
      * @return {@link EnumArgumentType} object
+     * @deprecated
      */
     public static <T extends Enum<T>> EnumArgumentType<T> enumType(Class<T> type) {
         return new EnumArgumentType<T>(type);
@@ -263,7 +244,7 @@ public final class Arguments {
      * <p>
      * Returns new {@link FileArgumentType} object.
      * </p>
-     * 
+     *
      * @return {@link FileArgumentType} object
      */
     public static FileArgumentType fileType() {
@@ -280,9 +261,8 @@ public final class Arguments {
      * {@link Enum#toString()}, this behaves the same as
      * {@link ReflectArgumentType} or just use {@link Argument#type(Class)}.
      * </p>
-     * 
-     * @param type
-     *            The enum type
+     *
+     * @param type The enum type
      * @return {@link EnumStringArgumentType} object
      */
     public static <T extends Enum<T>> EnumStringArgumentType<T> enumStringType(
@@ -300,7 +280,7 @@ public final class Arguments {
      * between the use of {@link BooleanArgumentType} and passing
      * {@link Boolean} class to {@link Argument#type(Class)}.
      * </p>
-     * 
+     *
      * @return The BooleanArgumentType object
      * @since 0.7.0
      */
@@ -317,16 +297,14 @@ public final class Arguments {
      * between the use of {@link BooleanArgumentType} and passing
      * {@link Boolean} class to {@link Argument#type(Class)}.
      * </p>
-     * 
-     * @param trueValue
-     *            string used as true value
-     * @param falseValue
-     *            string used as false value
+     *
+     * @param trueValue  string used as true value
+     * @param falseValue string used as false value
      * @return The BooleanArgumentType object
      * @since 0.7.0
      */
     public static BooleanArgumentType booleanType(String trueValue,
-            String falseValue) {
+                                                  String falseValue) {
         return new BooleanArgumentType(trueValue, falseValue);
     }
 }

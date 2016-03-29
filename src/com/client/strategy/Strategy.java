@@ -20,20 +20,19 @@ import java.net.SocketTimeoutException;
 
 public abstract class Strategy {
 
-    private final Unpack unpack;
-
-    protected static final String STATUS = "status";
+    private static final String STATUS = "status";
     protected static final String REQUEST_ID = "id";
+    private final Unpack unpack;
 
     /**
      * Class Constructor for Strategy
-     *
+     * <p/>
      * Initialize the object unpack which will be using for unmarshalling messages
      * from client
      *
      * @param unpack Unmarshalling object
      */
-    protected Strategy(Unpack unpack){
+    protected Strategy(Unpack unpack) {
         this.unpack = new Unpack.Builder()
                 .setType(STATUS, Unpack.TYPE.ONE_BYTE_INT)
                 .setType(REQUEST_ID, Unpack.TYPE.LONG)
@@ -48,32 +47,34 @@ public abstract class Strategy {
      * @param data bytearray for UDP communication
      * @return hashmap
      */
-    final protected Unpack.Result unpack(byte[] data){
+    final protected Unpack.Result unpack(byte[] data) {
         return this.unpack.parseByteArray(data);
     }
 
     /**
      * Check the status of the result
-     * @param result    Result from the byte array
-     * @return  boolean true or false
+     *
+     * @param result Result from the byte array
+     * @return boolean true or false
      */
-    final protected boolean isStatusOK(Unpack.Result result){
+    final protected boolean isStatusOK(Unpack.Result result) {
         OneByteInt status = result.getOneByteInt(STATUS);
-        if (status != null){
+        if (status != null) {
             return status.getValue() == 0;
         }
-       return false;
+        return false;
     }
 
     /**
      * This method check whether the Request ID is equal
-     * @param result    Result from the byte array
-     * @param id        Request ID
-     * @return  boolean true or false
+     *
+     * @param result Result from the byte array
+     * @param id     Request ID
+     * @return boolean true or false
      */
-    final protected boolean isRequestIdEqual(Unpack.Result result, long id){
+    final protected boolean isRequestIdEqual(Unpack.Result result, long id) {
         Long requestId = result.getLong(REQUEST_ID);
-        if (requestId != null){
+        if (requestId != null) {
             return requestId == id;
         }
         return false;
@@ -84,21 +85,21 @@ public abstract class Strategy {
      * there is no reply from server after a pre-defined
      * timeout
      *
-     * @param client        Client object
-     * @param pack          Marshalling object
-     * @param requestID     Request ID
+     * @param client    Client object
+     * @param pack      Marshalling object
+     * @param requestID Request ID
      * @return
      * @throws IOException
      */
-    final protected Unpack.Result keepTryingUntilReceive(Client client, Pack pack, long requestID) throws IOException{
-        while(true){
+    final protected Unpack.Result keepTryingUntilReceive(Client client, Pack pack, long requestID) throws IOException {
+        while (true) {
             try {
                 DatagramPacket packet = client.receive();
                 Unpack.Result result = unpack(packet.getData());
                 if (isRequestIdEqual(result, requestID)) {
                     return result;
                 }
-            }catch(SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 Console.info("  Strategy >> Timeout");
                 Console.info("  Strategy >> Resend");
                 client.send(pack);
@@ -110,8 +111,9 @@ public abstract class Strategy {
      * Compulsory method to be implemented by the daughter classes
      * Main method of the daughter classes
      * Services provided by the client side
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     *
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     public abstract void serviceUser(Console scanner, Client client) throws IOException;

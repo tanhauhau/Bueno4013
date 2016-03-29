@@ -27,7 +27,7 @@ package net.sourceforge.argparse4j.helper;
  * <p>
  * This interface abstracts the way of counting text width.
  * </p>
- * 
+ * <p/>
  * <p>
  * Since argparse4j is command line argument parser package and it is intended
  * to be used in terminal emulator and the terminal emulator in general uses
@@ -41,9 +41,8 @@ public interface TextWidthCounter {
 
     /**
      * Counts given text consumes how many fixed character width.
-     * 
-     * @param text
-     *            The text to inspect.
+     *
+     * @param text The text to inspect.
      * @return The computed value.
      */
     int width(String text);

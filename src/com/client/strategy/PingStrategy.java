@@ -29,8 +29,9 @@ public class PingStrategy extends Strategy {
 
     /**
      * Accept content from client and send to Server
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     *
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
@@ -55,7 +56,7 @@ public class PingStrategy extends Strategy {
         Unpack.Result result = keepTryingUntilReceive(client, ping, messageId);
         if (isStatusOK(result)) {
             Console.println(String.format("Received : %s", result.getString(DATA)));
-        }else{
+        } else {
             Console.println("Failed");
         }
 

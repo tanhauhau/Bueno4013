@@ -37,13 +37,14 @@ public class SizeStrategy extends Strategy {
      * This is an example of idempotent request
      * where client request to check the size of a certain file,
      * provided during this period, there is no other users accessing the file
-     * @param client        Client object
-     * @param filename      The name of the file Client wants to access
+     *
+     * @param client   Client object
+     * @param filename The name of the file Client wants to access
      * @return The file size (bytes) of the file if available, -1 otherwise
      * @throws IOException
      */
 
-    public long getFileSize(Client client, String filename) throws IOException{
+    public long getFileSize(Client client, String filename) throws IOException {
         long messageId = client.getMessageId();
         Pack request = new Pack.Builder()
                 .setValue("request", new OneByteInt(Client.SIZE_REQUEST))
@@ -57,7 +58,7 @@ public class SizeStrategy extends Strategy {
 
         if (isStatusOK(result)) {
             return result.getLong(SIZE);
-        }else{
+        } else {
             return -1;
         }
     }
@@ -65,18 +66,18 @@ public class SizeStrategy extends Strategy {
     /**
      * Accept input from Client of file name
      *
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Name of the file");
-        
+
         long size = getFileSize(client, filename);
-        if (size == -1){
+        if (size == -1) {
             Console.println("  SizeStrategy >> Not available");
-        }else {
+        } else {
             Console.println(String.format("  SizeStrategy >> Size: %s bytes", size));
         }
     }

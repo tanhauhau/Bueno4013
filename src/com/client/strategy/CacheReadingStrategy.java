@@ -22,7 +22,8 @@ public class CacheReadingStrategy extends Strategy {
 
     /**
      * Class Constructor of CacheReadingStrategy
-     * @param cache     Cache object
+     *
+     * @param cache Cache object
      */
     public CacheReadingStrategy(Cache cache) {
         super(new Unpack.Builder()
@@ -33,14 +34,14 @@ public class CacheReadingStrategy extends Strategy {
     }
 
     /**
-        This method serves as normal method for client to read a certain file from server
-        This method utilizes cache. The method will first try to check whether the cache contains
-        the file, then only fetch the file from server if the particular file is not available in
-        the client local cache
-        Parameter used:
-        filename    = Name of the file to be read
-        offset      = offset byte from the beginning of the file
-        length      = length of byte that will be read from the file
+     This method serves as normal method for client to read a certain file from server
+     This method utilizes cache. The method will first try to check whether the cache contains
+     the file, then only fetch the file from server if the particular file is not available in
+     the client local cache
+     Parameter used:
+     filename    = Name of the file to be read
+     offset      = offset byte from the beginning of the file
+     length      = length of byte that will be read from the file
      */
 
     /**
@@ -50,8 +51,9 @@ public class CacheReadingStrategy extends Strategy {
      * check whether the cache contains the file, then only
      * fetch the file from server if the particular file is
      * not available in the client local cache
-     * @param scanner       Console Scanner
-     * @param client        Client object
+     *
+     * @param scanner Console Scanner
+     * @param client  Client object
      * @throws IOException
      */
 
@@ -62,12 +64,12 @@ public class CacheReadingStrategy extends Strategy {
         int length = scanner.askForInteger("Number of episodes to watch");
 
         Console.info("  CacheReadingStrategy >> Loading cache");
-        if(this.cacheStrategy.loadCache(client, filename)) {
+        if (this.cacheStrategy.loadCache(client, filename)) {
 
             String data = cache.readFromCache(filename, offset, length);
 
             Console.println(String.format("  CacheReadingStrategy >> Data: '%s'", data));
-        }else{
+        } else {
             Console.println("  CacheReadingStrategy >> Server Error");
         }
     }

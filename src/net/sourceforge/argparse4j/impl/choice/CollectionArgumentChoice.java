@@ -23,11 +23,11 @@
  */
 package net.sourceforge.argparse4j.impl.choice;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import net.sourceforge.argparse4j.helper.TextHelper;
 import net.sourceforge.argparse4j.inf.ArgumentChoice;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * <p>
@@ -44,9 +44,8 @@ public class CollectionArgumentChoice<E> implements ArgumentChoice {
 
     /**
      * Initializes this object from given values.
-     * 
-     * @param values
-     *            Valid values
+     *
+     * @param values Valid values
      */
     public CollectionArgumentChoice(E... values) {
         values_ = Arrays.asList(values);
@@ -54,9 +53,8 @@ public class CollectionArgumentChoice<E> implements ArgumentChoice {
 
     /**
      * Initializes this object from given values.
-     * 
-     * @param values
-     *            Valid values
+     *
+     * @param values Valid values
      */
     public CollectionArgumentChoice(Collection<E> values) {
         values_ = values;

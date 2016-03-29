@@ -30,83 +30,22 @@ import java.util.Comparator;
  * <p>
  * CJK aware TextWidthCounter implementation.
  * </p>
- * 
+ * <p/>
  * <p>
  * This class uses East Asian Width information of Unicode and counts 2 for
  * Wide, Full and Ambiguous characters.
  * </p>
- * 
+ * <p/>
  * <p>
  * <strong>The application code should not use this class directly.</strong>
  * </p>
- * 
  */
 public class CJKTextWidthCounter implements TextWidthCounter {
 
-    @Override
-    public int width(String text) {
-        int len = text.length();
-        CpRange key = new CpRange();
-        int cnt = 0;
-        for (int i = 0, cp; i < len; i += Character.charCount(cp)) {
-            cp = text.codePointAt(i);
-            key.first = cp;
-            key.last = cp + 1;
-            if (Arrays.binarySearch(ranges_, key, cpRangeCmp_) >= 0) {
-                cnt += 2;
-            } else {
-                ++cnt;
-            }
-        }
-        return cnt;
-    }
-
-    private static enum EastAsianWidth {
-        W, // Wide
-        F, // Full
-        A // Ambiguous
-    }
-
-    /**
-     * Range is [first, last)
-     * 
-     */
-    private static class CpRange {
-        int first, last;
-        EastAsianWidth w;
-
-        public CpRange(int first, int last, EastAsianWidth w) {
-            this.first = first;
-            this.last = last;
-            this.w = w;
-        }
-
-        public CpRange() {
-        }
-
-    }
-
-    private static class CpRangeCmp implements Comparator<CpRange> {
-
-        @Override
-        public int compare(CpRange lhs, CpRange rhs) {
-            // Assumes rhs is [x, x+1)
-            if (lhs.last <= rhs.first) {
-                return -1;
-            } else if (rhs.last <= lhs.first) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-
-    }
-
     private static final CpRangeCmp cpRangeCmp_ = new CpRangeCmp();
-
     /**
      * Compiled using wfarange.py.
-     * 
+     * <p/>
      * # EastAsianWidth-6.0.0.txt
      * # Date: 2010-08-17, 12:17:00 PDT [KW]
      */
@@ -324,6 +263,64 @@ public class CJKTextWidthCounter implements TextWidthCounter {
             new CpRange(0x30000, 0x3FFFE, EastAsianWidth.W),
             new CpRange(0xE0100, 0xE01F0, EastAsianWidth.A),
             new CpRange(0xF0000, 0xFFFFE, EastAsianWidth.A),
-            new CpRange(0x100000, 0x10FFFE, EastAsianWidth.A) };
+            new CpRange(0x100000, 0x10FFFE, EastAsianWidth.A)};
+
+    @Override
+    public int width(String text) {
+        int len = text.length();
+        CpRange key = new CpRange();
+        int cnt = 0;
+        for (int i = 0, cp; i < len; i += Character.charCount(cp)) {
+            cp = text.codePointAt(i);
+            key.first = cp;
+            key.last = cp + 1;
+            if (Arrays.binarySearch(ranges_, key, cpRangeCmp_) >= 0) {
+                cnt += 2;
+            } else {
+                ++cnt;
+            }
+        }
+        return cnt;
+    }
+
+    private enum EastAsianWidth {
+        W, // Wide
+        F, // Full
+        A // Ambiguous
+    }
+
+    /**
+     * Range is [first, last)
+     */
+    private static class CpRange {
+        int first, last;
+        EastAsianWidth w;
+
+        public CpRange(int first, int last, EastAsianWidth w) {
+            this.first = first;
+            this.last = last;
+            this.w = w;
+        }
+
+        public CpRange() {
+        }
+
+    }
+
+    private static class CpRangeCmp implements Comparator<CpRange> {
+
+        @Override
+        public int compare(CpRange lhs, CpRange rhs) {
+            // Assumes rhs is [x, x+1)
+            if (lhs.last <= rhs.first) {
+                return -1;
+            } else if (rhs.last <= lhs.first) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+    }
 
 }

@@ -18,8 +18,9 @@ public class LossReceiveSocket extends WrapperSocket {
 
     /**
      * Class Constructor for LossReceiveSocket
-     * @param socket            Socket Used
-     * @param probability       Probability of packet loss during receive, between 0 to 1
+     *
+     * @param socket      Socket Used
+     * @param probability Probability of packet loss during receive, between 0 to 1
      */
     public LossReceiveSocket(Socket socket, double probability) {
         super(socket);
@@ -32,19 +33,20 @@ public class LossReceiveSocket extends WrapperSocket {
      * there are packet losses during the receiving to
      * test the at-most-one implementation especially
      * the request is non-idempotent
-     * @param p                 Datagram Packet
+     *
+     * @param p Datagram Packet
      * @throws IOException
      * @throws SocketTimeoutException
      */
     @Override
-    public void receive(DatagramPacket p) throws IOException, SocketTimeoutException {
-        if (random.nextDouble() < this.prob){
+    public void receive(DatagramPacket p) throws IOException {
+        if (random.nextDouble() < this.prob) {
             super.receive(p);                   /* Receive the packet if the prob of receiving is higher */
-        }else{
+        } else {
             try {
                 Thread.sleep(1000);             /* Else sleep the thread to stimulate packet loss */
                 Console.info("  LossReceiveSocket >> Fake Packet Loss when receiving");
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
             throw new SocketTimeoutException();
         }

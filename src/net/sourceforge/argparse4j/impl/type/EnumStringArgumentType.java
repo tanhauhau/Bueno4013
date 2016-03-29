@@ -24,23 +24,18 @@
 package net.sourceforge.argparse4j.impl.type;
 
 import net.sourceforge.argparse4j.helper.TextHelper;
-import net.sourceforge.argparse4j.inf.Argument;
-import net.sourceforge.argparse4j.inf.ArgumentParser;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import net.sourceforge.argparse4j.inf.ArgumentType;
-import net.sourceforge.argparse4j.inf.MetavarInference;
+import net.sourceforge.argparse4j.inf.*;
 
 /**
  * <p>
  * ArgumentType subclass for enum type.
  * </p>
- * <p>
+ * <p/>
  * Uses {@link Enum#toString()} instead of {@link Enum#name()} as the String
  * representation of the enum. For enums that do not override {@link Enum#toString()},
  * this behaves the same as {@link ReflectArgumentType}.
  *
- * @param <T>
- *            Type of enum
+ * @param <T> Type of enum
  */
 public class EnumStringArgumentType<T extends Enum<T>> implements
         ArgumentType<T>, MetavarInference {
@@ -52,11 +47,11 @@ public class EnumStringArgumentType<T extends Enum<T>> implements
     }
 
     /**
-     * <p>
+     * <p/>
      * Creates an {@code EnumStringArgumentType} for the given enum type.
-     * @param type
-     *            type of the enum the {@code EnumStringArgumentType} should convert to
-     * @return an {@code EnumStringArgumentType} that converts Strings to {@code type} 
+     *
+     * @param type type of the enum the {@code EnumStringArgumentType} should convert to
+     * @return an {@code EnumStringArgumentType} that converts Strings to {@code type}
      */
     public static <T extends Enum<T>> EnumStringArgumentType<T> forEnum(Class<T> type) {
         return new EnumStringArgumentType<T>(type);
@@ -87,13 +82,13 @@ public class EnumStringArgumentType<T extends Enum<T>> implements
      * The inferred metavar contains all enum constant string representation,
      * obtained by calling their {@link Object#toString()} method.
      * </p>
-     * 
+     *
      * @see net.sourceforge.argparse4j.inf.MetavarInference#inferMetavar()
      * @since 0.7.0
      */
     @Override
     public String[] inferMetavar() {
-        return new String[] { TextHelper.concat(type_.getEnumConstants(),
-                0, ",", "{", "}") };
+        return new String[]{TextHelper.concat(type_.getEnumConstants(),
+                0, ",", "{", "}")};
     }
 }

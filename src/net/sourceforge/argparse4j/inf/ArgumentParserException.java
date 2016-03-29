@@ -29,12 +29,11 @@ import net.sourceforge.argparse4j.helper.TextHelper;
  * The exception thrown from {@link ArgumentParser#parseArgs(String[])} if error
  * occurred while processing command line argument. The argument {@code parser}
  * in constructor is the ArgumentParser object where an error occurred.
- * 
  */
 public class ArgumentParserException extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private transient ArgumentParser parser_;
@@ -50,7 +49,7 @@ public class ArgumentParserException extends Exception {
     }
 
     public ArgumentParserException(String message, Throwable cause,
-            ArgumentParser parser) {
+                                   ArgumentParser parser) {
         super(message, cause);
         parser_ = parser;
     }
@@ -61,13 +60,13 @@ public class ArgumentParserException extends Exception {
     }
 
     public ArgumentParserException(String message, ArgumentParser parser,
-            Argument arg) {
+                                   Argument arg) {
         super(formatMessage(message, arg));
         parser_ = parser;
     }
 
     public ArgumentParserException(String message, Throwable cause,
-            ArgumentParser parser, Argument arg) {
+                                   ArgumentParser parser, Argument arg) {
         super(formatMessage(message, arg), cause);
         parser_ = parser;
     }

@@ -25,9 +25,8 @@ package net.sourceforge.argparse4j.inf;
 
 /**
  * This interface defines type conversion method.
- * 
- * @param <T>
- *            Type this object convert to.
+ *
+ * @param <T> Type this object convert to.
  */
 public interface ArgumentType<T> {
 
@@ -41,16 +40,12 @@ public interface ArgumentType<T> {
      * catch these exceptions and wrap them in {@link ArgumentParserException}
      * and give simple error message to explain what happened briefly.
      * </p>
-     * 
-     * @param parser
-     *            The aprser.
-     * @param arg
-     *            The argument this type attached to.
-     * @param value
-     *            The attribute value.
+     *
+     * @param parser The aprser.
+     * @param arg    The argument this type attached to.
+     * @param value  The attribute value.
      * @return Converted object.
-     * @throws ArgumentParserException
-     *             If conversion fails.
+     * @throws ArgumentParserException If conversion fails.
      */
     T convert(ArgumentParser parser, Argument arg, String value)
             throws ArgumentParserException;
