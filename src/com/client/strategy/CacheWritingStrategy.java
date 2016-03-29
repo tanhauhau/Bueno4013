@@ -11,19 +11,35 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This class is similar with the WritingStrategy Class,
+ * but this class utilize Client's side caching
  */
 public class CacheWritingStrategy extends Strategy {
 
     private final Cache cache;
-    private final CacheStrategy cacheFucker;
+    private final CacheStrategy cacheStrategy;
 
+    /**
+     * Class Constructor for CacheWritingStrategy Class
+     * @param cache     Cache object
+     */
     public CacheWritingStrategy(Cache cache) {
         super(null);
         this.cache = cache;
-        this.cacheFucker = new CacheStrategy(cache);
+        this.cacheStrategy = new CacheStrategy(cache);
     }
 
-
+    /**
+     * This method serves as normal method for client to
+     * write content into a certain file from server
+     * If the file is available in cache, the file in cache
+     * will be updated, then it will be send back to server
+     * for cache content update
+     *
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Whisper to who?");
@@ -50,7 +66,7 @@ public class CacheWritingStrategy extends Strategy {
             if(!cache.cacheAvailable(client, filename)){
                 Console.info("  CacheWritingStrategy >> FileCache is not available");
                 Console.info("  CacheWritingStrategy >> Load FileCache");
-                this.cacheFucker.loadCache(client, filename);
+                this.cacheStrategy.loadCache(client, filename);
             }else {
                 Console.info("  CacheWritingStrategy >> Update cache");
                 cache.writeToCache(filename, offset, content);

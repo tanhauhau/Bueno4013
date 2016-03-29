@@ -10,26 +10,33 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This class extend the Parent Strategy Class
+ * This option enable Client to issue request
+ * to write certain content into certain file
  */
+
 public class WritingStrategy extends Strategy {
 
+    /**
+     * Class Constructor for WritingStrategy Class
+     */
     public WritingStrategy() {
         super(null);
     }
 
-        /*
-        This method serves as normal method for client to read a certain file from server
-        This method does not utilize cache
-        Parameter used:
-        filename    = Name of the file to be read
-        offset      = offset byte from the beginning of the file
-        length      = length of byte that will be read from the file
-        content     = the content which will be written into the file
+    /**
+     * This method serves as normal method for
+     * client to read a certain file from server
+     * This method does not utilize cache
+     *
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
      */
 
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Whisper to who?");
+        String filename = scanner.askForString("Writing into which file?");
         int offset = scanner.askForInteger("Starting from where");
         String content = scanner.askForString("Content");
 

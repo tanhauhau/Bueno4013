@@ -10,11 +10,17 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This ReadingStrategy enable Client to
+ * access a certain file and retrieve a
+ * segment of the file
  */
 public class ReadingStrategy extends Strategy {
 
     private final static String DATA = "data";
 
+    /**
+     * Class Constructor for ReadingStrategy
+     */
     public ReadingStrategy() {
         super(new Unpack.Builder()
                 .setType(DATA, Unpack.TYPE.STRING)
@@ -22,14 +28,13 @@ public class ReadingStrategy extends Strategy {
     }
 
     /**
-        This method serves as normal method for client to read a certain file from server
-        This method does not utilize cache
-        Parameter used:
-        filename    = Name of the file to be read
-        offset      = offset byte from the beginning of the file
-        length      = length of byte that will be read from the file
+     * This method serves as normal method for client to
+     * read a certain file from server
+     * This method does not utilize cache
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
      */
-
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Name of that porn");

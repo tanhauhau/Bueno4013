@@ -11,6 +11,7 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This Class acts as a Client's side caching
  */
 public class CacheStrategy extends Strategy {
 
@@ -27,7 +28,11 @@ public class CacheStrategy extends Strategy {
     }
 
     /**
-        This method enable client to manually cache a certain file from server
+     * This method will load the file available in cache to client
+     * @param client            Client object
+     * @param filename          Name of the file where client wants to access
+     * @return boolean true (if available) or false
+     * @throws IOException
      */
 
     public boolean loadCache(Client client, String filename) throws IOException {
@@ -65,6 +70,12 @@ public class CacheStrategy extends Strategy {
         }
     }
 
+    /**
+     * Accept File name input from client and load the file from cache
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Name of that file");

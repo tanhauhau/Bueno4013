@@ -10,6 +10,9 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This class is an example of non-idempotent request
+ * This class enable Client to duplicate the entire content of
+ * a certain file
  */
 public class DoubleStrategy extends Strategy {
 
@@ -19,11 +22,18 @@ public class DoubleStrategy extends Strategy {
 
     /*
         This is an example of non-idempotent request
-        When client select this options towards a certain file
-        the server will duplicate the entire content of the file, and double the size
-        of the file
+
      */
 
+    /**
+     * When client select this options towards a certain file
+     * the server will duplicate the entire content of the file,
+     * and double the size of the file
+     *
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Filename");

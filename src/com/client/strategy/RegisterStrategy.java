@@ -13,6 +13,13 @@ import java.net.SocketTimeoutException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This class enable Client to register themselves
+ * into callback of files they desired for
+ * a certain timeout.
+ * During the monitoring interval, any changes made to
+ * the file will be informed to the Clients.
+ * During this monitoring interval, registered clients
+ * are not able to write anything to the file
  */
 public class RegisterStrategy extends Strategy {
 
@@ -21,6 +28,10 @@ public class RegisterStrategy extends Strategy {
     private final static String DATA = "data";
     private final Cache cache;
 
+    /**
+     * Class Constructor for RegisterStrategy Class
+     * @param cache     Cache object on Client's side
+     */
     public RegisterStrategy(Cache cache) {
         super(new Unpack.Builder()
                 .setType(STATUS, Unpack.TYPE.ONE_BYTE_INT)
@@ -31,11 +42,20 @@ public class RegisterStrategy extends Strategy {
     }
 
     /*
-        This method registers the client for a callback of a certain file for a certain duration
-        during the callback duration, client can monitor the file, if there is any changes in the file
-        the changes will be shown to the client until timeout
+
      */
 
+    /**
+     * This method registers the client for a callback of a
+     * certain file for a certain duration
+     * during the callback duration, client can monitor the file,
+     * if there is any changes in the file, the changes will be
+     * shown to the client until timeout
+     *
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Callback for which file?");
@@ -59,16 +79,10 @@ public class RegisterStrategy extends Strategy {
             Console.println("  RegisterStrategy >> Start observing file change");
         }
 
-        /*
-            Calculate the end of timeout
-         */
-        long timeStart = System.currentTimeMillis();
+        long timeStart = System.currentTimeMillis();        /* Calculate the time for timeout */
         long timeEnd = timeStart + timeout * 1000; //timeout * 1000ms
 
-        /*
-            Monitoring the file during the period of callback
-         */
-        while (System.currentTimeMillis() < timeEnd) {
+        while (System.currentTimeMillis() < timeEnd) {      /* Monitoring the file during the interval of callback */
             try {
                 client.setTimeout((int) (timeEnd - System.currentTimeMillis()));
 
@@ -85,7 +99,7 @@ public class RegisterStrategy extends Strategy {
                 if (!checkValidity(status, status2)) continue;
                 if (data == null)   continue;
 
-                Console.println(String.format("  RegisterStrategy >> DataChanged: '%s'", data));
+                Console.println(String.format("  RegisterStrategy >> DataChanged: '%s'", data)); /* Inform the registered client about the changes made */
                 cache.writeToCache(filename, data);
             }catch (SocketTimeoutException e){
                 Console.info("  RegisterStrategy >> Timeout");
@@ -101,6 +115,6 @@ public class RegisterStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "Peeping chiobu bathing";
+        return "Register for File Callback";
     }
 }

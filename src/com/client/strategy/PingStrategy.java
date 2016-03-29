@@ -10,21 +10,28 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This Class enable Client to ping the server
+ * If the ping is success, the content sent by client
+ * will be resend back by Server
  */
 public class PingStrategy extends Strategy {
 
     private final static String DATA = "data";
 
+    /**
+     * Class Constructor for PingStrategy
+     */
     public PingStrategy() {
         super(new Unpack.Builder()
                 .setType(DATA, Unpack.TYPE.STRING)
                 .build());
     }
 
-    /*
-        Accept and wrap the user request
-        Marshall the request into byte array and
-        sent to server for further services.
+    /**
+     * Accept content from client and send to Server
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {

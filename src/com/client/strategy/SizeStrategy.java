@@ -10,11 +10,17 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This SizeStrategy class enable Client to request
+ * the file size of a certain file(if available)
+ * This class extend to the Parent Strategy class
  */
 public class SizeStrategy extends Strategy {
 
     private final static String SIZE = "size";
 
+    /**
+     * Class Constructor for SizeStrategy class
+     */
     public SizeStrategy() {
         super(new Unpack.Builder()
                 .setType(SIZE, Unpack.TYPE.LONG)
@@ -25,6 +31,16 @@ public class SizeStrategy extends Strategy {
         This is an example of idempotent request
         where client request to check the size of a certain file,
         provided during this period, there is no other users accessing the file
+     */
+
+    /**
+     * This is an example of idempotent request
+     * where client request to check the size of a certain file,
+     * provided during this period, there is no other users accessing the file
+     * @param client        Client object
+     * @param filename      The name of the file Client wants to access
+     * @return The file size (bytes) of the file if available, -1 otherwise
+     * @throws IOException
      */
 
     public long getFileSize(Client client, String filename) throws IOException{
@@ -46,6 +62,13 @@ public class SizeStrategy extends Strategy {
         }
     }
 
+    /**
+     * Accept input from Client of file name
+     *
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Name of the file");

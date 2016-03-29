@@ -11,6 +11,9 @@ import java.util.Date;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This Class will enable Client to check the
+ * timestamp of the file where it was last modified
+ * This is an example of idempotent request
  */
 public class LastModifiedStrategy extends Strategy {
 
@@ -22,9 +25,17 @@ public class LastModifiedStrategy extends Strategy {
                 .build());
     }
     /*
-        This is an example of idempotent request
-        User can check the the last time where the file was previously edited
-        provided there is no other users access the file during this process
+
+     */
+
+    /**
+     * This is an example of idempotent request
+     * User can check the the last time where the file was previously edited
+     * provided there is no other users access the file during this process
+     * @param client        Client object
+     * @param filename      Name of the file Client wants to access
+     * @return The timestamp if the file is available, -1 otherwise
+     * @throws IOException
      */
 
     public long lastUpdate(Client client, String filename) throws IOException{
@@ -45,6 +56,13 @@ public class LastModifiedStrategy extends Strategy {
         return result.getLong(TIME);
     }
 
+    /**
+     * Accept file name input from Client and
+     * execute the strategy services
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         String filename = scanner.askForString("Name of that file");

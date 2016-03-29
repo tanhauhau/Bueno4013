@@ -9,6 +9,10 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This ReadingStrategy enable Client to
+ * access a certain file and retrieve a
+ * segment of the file
+ * This class utilized Client's side caching
  */
 public class CacheReadingStrategy extends Strategy {
 
@@ -16,6 +20,10 @@ public class CacheReadingStrategy extends Strategy {
     private final Cache cache;
     private final CacheStrategy cacheStrategy;
 
+    /**
+     * Class Constructor of CacheReadingStrategy
+     * @param cache     Cache object
+     */
     public CacheReadingStrategy(Cache cache) {
         super(new Unpack.Builder()
                 .setType(DATA, Unpack.TYPE.STRING)
@@ -35,6 +43,17 @@ public class CacheReadingStrategy extends Strategy {
         length      = length of byte that will be read from the file
      */
 
+    /**
+     * This method serves as normal method for client to
+     * read a certain file from server
+     * This method utilizes cache. The method will first try to
+     * check whether the cache contains the file, then only
+     * fetch the file from server if the particular file is
+     * not available in the client local cache
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
+     */
 
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {

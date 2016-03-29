@@ -12,13 +12,12 @@ import java.net.SocketTimeoutException;
 
 /**
  * Created by lhtan on 22/3/16.
+ * This Class is an abstract class for all the daughter strategy classes
+ * Methods implemented can be used by daughter classes, or overrided
+ * Few methods are not implemented and mandatory to be implemented
+ * by daughter classes
  */
 
-/**
-    This class serve as an abstract class for all the Strategy classes
-    all abstract classes must be implemented in the daughter classes
-    which extends this abstract class
- */
 public abstract class Strategy {
 
     private final Unpack unpack;
@@ -26,6 +25,14 @@ public abstract class Strategy {
     protected static final String STATUS = "status";
     protected static final String REQUEST_ID = "id";
 
+    /**
+     * Class Constructor for Strategy
+     *
+     * Initialize the object unpack which will be using for unmarshalling messages
+     * from client
+     *
+     * @param unpack Unmarshalling object
+     */
     protected Strategy(Unpack unpack){
         this.unpack = new Unpack.Builder()
                 .setType(STATUS, Unpack.TYPE.ONE_BYTE_INT)
@@ -34,12 +41,21 @@ public abstract class Strategy {
                 .include(unpack);
     }
 
+    /**
+     * Return the hashmap containing the component of the byte array
+     * after parsing
+     *
+     * @param data bytearray for UDP communication
+     * @return hashmap
+     */
     final protected Unpack.Result unpack(byte[] data){
         return this.unpack.parseByteArray(data);
     }
 
-    /*
-        Checking status
+    /**
+     * Check the status of the result
+     * @param result    Result from the byte array
+     * @return  boolean true or false
      */
     final protected boolean isStatusOK(Unpack.Result result){
         OneByteInt status = result.getOneByteInt(STATUS);
@@ -49,6 +65,12 @@ public abstract class Strategy {
        return false;
     }
 
+    /**
+     * This method check whether the Request ID is equal
+     * @param result    Result from the byte array
+     * @param id        Request ID
+     * @return  boolean true or false
+     */
     final protected boolean isRequestIdEqual(Unpack.Result result, long id){
         Long requestId = result.getLong(REQUEST_ID);
         if (requestId != null){
@@ -57,9 +79,16 @@ public abstract class Strategy {
         return false;
     }
 
-    /*
-        Resend request when reply is not received
-        may due to server lag or packet loss
+    /**
+     * This method will resend request to server, if
+     * there is no reply from server after a pre-defined
+     * timeout
+     *
+     * @param client        Client object
+     * @param pack          Marshalling object
+     * @param requestID     Request ID
+     * @return
+     * @throws IOException
      */
     final protected Unpack.Result keepTryingUntilReceive(Client client, Pack pack, long requestID) throws IOException{
         while(true){
@@ -77,10 +106,13 @@ public abstract class Strategy {
         }
     }
 
-    /*
-        Compulsory method to be implemented by the daughter classes
-        Main method of the daughter classes
-        Services provided by the client side
+    /**
+     * Compulsory method to be implemented by the daughter classes
+     * Main method of the daughter classes
+     * Services provided by the client side
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
      */
     public abstract void serviceUser(Console scanner, Client client) throws IOException;
 
