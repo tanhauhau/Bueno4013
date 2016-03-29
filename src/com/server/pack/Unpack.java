@@ -178,6 +178,16 @@ public class Unpack {
             return null;
         }
     }
+
+    /**
+     * This method will convert bytes from byte array
+     * back into string
+     *
+     * @param data          Byte Array from the datagram socket
+     * @param offset        offset from the first location of the buffer array
+     * @param length        length of the string to be parsed
+     * @return
+     */
     private String parseString(byte[] data, int offset, int length){
         try{
             StringBuilder sb = new StringBuilder();
@@ -190,8 +200,15 @@ public class Unpack {
         }
     }
 
+    /**
+     * This is the Builder Class for the unpack class
+     */
     public static class Builder{
         private Unpack pack;
+
+        /**
+         * Class Constructor
+         */
         public Builder() {
             pack = new Unpack();
         }
