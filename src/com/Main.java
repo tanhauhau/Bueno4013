@@ -44,7 +44,8 @@ public class Main {
                     .use(8, new CacheStrategy(cache))
                     .use(9, new CacheReadingStrategy(cache))
                     .use(10, new CacheWritingStrategy(cache))
-                    .use(11, new CacheDetailStrategy(cache));
+                    .use(11, new CacheDetailStrategy(cache))
+                    .use(12, new CreateFileStrategy(cache));
 
             if (ns.getInt("lag") > 0) {
                 client.makeItLag(ns.getInt("lag"));

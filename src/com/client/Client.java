@@ -24,6 +24,7 @@ public class Client {
     public static final int SIZE_REQUEST = 4;
     public static final int DOUBLE_REQUEST = 5;
     public static final int LAST_MODIFIED_REQUEST = 6;
+    public static final int NEW_FILE_REQUEST = 7;
     private static final int BUFFER_SIZE = 1048576; //1MB
     private static final byte EMPTY = 0;
     //buffer
