@@ -8,10 +8,11 @@ import java.util.HashMap;
 
 /**
  * Created by lhtan on 22/3/16.
+ * This Unpack Class is the Unmarshalling handler
+ * The messages will be converted from byte array back
+ * into Type of the objects in the message
  */
-/**
-    This Class is for Unmarshalling
- */
+
 public class Unpack {
 
     public enum TYPE{
@@ -21,12 +22,44 @@ public class Unpack {
     private ArrayList<String> properties;
     private HashMap<String, TYPE> values;
 
-    /*
-        Getting the object back from hashmap
+    /**
+     * Class Constructor of Unpack
      */
+    private Unpack() {
+        this.properties = new ArrayList<>();
+        this.values = new HashMap<>();
+    }
+
+    /**
+     * This method will include all the values
+     * and properties
+     * @param unpack    Unmarshalling object
+     * @return unpack the object itself
+     */
+    public Unpack include(Unpack unpack){
+        if (unpack != null) {
+            for (String prop : unpack.properties) {
+                Assert.check(!this.properties.contains(prop), String.format("Property %s already existed!!", prop));
+            }
+            this.properties.addAll(unpack.properties);
+            this.values.putAll(unpack.values);
+        }
+        return this;
+    }
+
+    /**
+     * This Result Class is the handler for
+     * retrieving the components of the message
+     * from the hashmap
+     */
+
     public static class Result{
         HashMap<String, Object> map;
 
+        /**
+         * Class Constructor for Result
+         * @param map   Hashmap containing the object of the message's components
+         */
         public Result(HashMap<String, Object> map) {
             this.map = map;
         }
@@ -61,11 +94,16 @@ public class Unpack {
             return null;
         }
     }
-    /**
-        Unmarshalling the byte array to restore the message
-        by analysing the byte and store it into a hashmap
-     */
 
+    /**
+     * This method will scan the byte array
+     * and insert the object of the component
+     * of the messages into the hashmap, based
+     * on the type of object
+     *
+     * @param data      Byte Array received from the datagram packet
+     * @return  A complete hashmap containing the objects of the components of the message
+     */
     public Result parseByteArray(byte[] data){
         int offset = 0;
         HashMap<String, Object> map = new HashMap<>();
@@ -98,6 +136,14 @@ public class Unpack {
         //4. return the result
         return new Result(map);
     }
+    /**
+     * This method will convert bytes from bytes array
+     * into integers
+     *
+     * @param data          Byte Array from the datagram packet
+     * @param offset        offset from the first location of the buffer array
+     * @return              the converted integer
+     */
 
     private Integer parseInt(byte[] data, int offset){
         try{
@@ -110,6 +156,14 @@ public class Unpack {
             return null;
         }
     }
+    /**
+     * This method will convert bytes from bytes array
+     * into longs
+     *
+     * @param data          Byte Array from the datagram packet
+     * @param offset        offset from the first location of the buffer array
+     * @return              the converted long
+     */
     private Long parseLong(byte[] data, int offset){
         try{
             return  ((data[offset ++] & 0xFFL) << 56) |
@@ -124,6 +178,16 @@ public class Unpack {
             return null;
         }
     }
+
+    /**
+     * This method will convert bytes from byte array
+     * back into string
+     *
+     * @param data          Byte Array from the datagram socket
+     * @param offset        offset from the first location of the buffer array
+     * @param length        length of the string to be parsed
+     * @return
+     */
     private String parseString(byte[] data, int offset, int length){
         try{
             StringBuilder sb = new StringBuilder();
@@ -136,23 +200,15 @@ public class Unpack {
         }
     }
 
-    private Unpack() {
-        this.properties = new ArrayList<>();
-        this.values = new HashMap<>();
-    }
-    public Unpack include(Unpack unpack){
-        if (unpack != null) {
-            for (String prop : unpack.properties) {
-                Assert.check(!this.properties.contains(prop), String.format("Property %s already existed!!", prop));
-            }
-            this.properties.addAll(unpack.properties);
-            this.values.putAll(unpack.values);
-        }
-        return this;
-    }
-
+    /**
+     * This is the Builder Class for the unpack class
+     */
     public static class Builder{
         private Unpack pack;
+
+        /**
+         * Class Constructor
+         */
         public Builder() {
             pack = new Unpack();
         }

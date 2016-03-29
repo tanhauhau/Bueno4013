@@ -8,20 +8,29 @@ import java.io.IOException;
 
 /**
  * Created by lhtan on 23/3/16.
+ * This Class will list out all the content
+ * available in the cache
  */
 public class CacheDetailStrategy extends Strategy {
 
     private final Cache cache;
+
+    /**
+     * Class Constructor of CacheDetailStrategy
+     * @param cache     Cache object
+     */
     public CacheDetailStrategy(Cache cache) {
         super(null);
         this.cache = cache;
     }
 
     /**
-        This method enable client to list out all the files
-        available in the cache.
+     * This method will list out all the files available
+     * in the Client's cache
+     * @param scanner       Console Scanner
+     * @param client        Client object
+     * @throws IOException
      */
-
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
         Console.println(" >>> Cached Listing <<< ");
