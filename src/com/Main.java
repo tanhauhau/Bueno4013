@@ -83,7 +83,6 @@ public class Main {
                 .setDefault(AT_LEAST_ONCE)
                 .help("Specify the invocation semantics");
         parser.addArgument("-f", "--folder")
-                .nargs(1)
                 .required(true)
                 .help("Folder storing data");
         parser.addArgument("-l","--lag")
