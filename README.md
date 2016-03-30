@@ -71,7 +71,7 @@ find . -type f | grep .java | xargs cat > code.txt
 
 ## Demo
 
-[Demo](http://lihautan.me/demo/distributed) ([Github](https://github.com/tanhauhau/Bueno4013.Demo))
+[Demo](http://lihautan.me/demo/distributed/start) ([Github](https://github.com/tanhauhau/Bueno4013.Demo))
 
 
 ## Contributor
