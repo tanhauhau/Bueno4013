@@ -69,6 +69,10 @@ For submission purpose, the code has to be submitted as one file, for ease of pl
 find . -type f | grep .java | xargs cat > code.txt
 ``` 
 
+## Demo
+
+[Demo](http://lihautan.me/demo/distributed)
+
 
 ## Contributor
 * Tan Li Hau
