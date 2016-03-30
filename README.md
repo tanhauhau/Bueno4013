@@ -19,6 +19,7 @@ Directory | Content
 `Client/src/com/client/socket` `Server/src/com/server/socket`  | Contains code for various socket decorator
 `Client/src/com/client/strategy` `Server/src/com/server/strategy` | Contains code for strategy, such as `WriteStrategy`, `ReadStrategy`, and etc.
 `Client/src/net/sourceforge/argparse4j` `Server/src/net/sourceforge/argparse4j` | [Argparse4j Library](https://argparse4j.github.io) for parsing argument
+`Report` | Report
 `merge.sh` | Bash script to concatenate all Java code into a file
 
 ## Get Started
