@@ -62,7 +62,7 @@ public class WritingStrategy extends Strategy {
             return replyError(request.getRequestID(), "Corrupted data");    /* Check is there any null object in parameter */
 
         File file = new File(folder, filename);
-        if (!file.exists()){
+        if (!file.exists() || !file.isFile()){
             return replyError(request.getRequestID(), "No such file");      /* Return error message if file not found */
         }else {
             long fileByteSize = file.length();

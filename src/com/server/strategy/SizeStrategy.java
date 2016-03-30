@@ -48,7 +48,7 @@ public class SizeStrategy extends Strategy {
             return replyError(request.getRequestID(), "Corrupted data");    /* Return error message if the filename parameter is NULL */
 
         File file = new File(folder, filename);
-        if (!file.exists()){
+        if (!file.exists() || !file.isFile()){
             return replyError(request.getRequestID(), "No such file");      /* Return error message if file doesn't exist */
         }else {
             Long fileByteSize = file.length();                              /* Acquire file size and return with success message */

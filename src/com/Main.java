@@ -54,10 +54,10 @@ public class Main {
                 server.makeItLag(ns.getInt("lag"));
             }
             if (ns.getDouble("gibberish") > 0){
-                server.makeItSendGibberish(1 - Math.max(1, ns.getDouble("gibberish")));
+                server.makeItSendGibberish(1 - Math.min(1, ns.getDouble("gibberish")));
             }
             if (ns.getDouble("send") > 0){
-                server.makeItPacketLossWhenSending(1 - Math.max(1, ns.getDouble("send")));
+                server.makeItPacketLossWhenSending(1 - Math.min(1, ns.getDouble("send")));
             }
             server.start();
         }catch (Exception e){
