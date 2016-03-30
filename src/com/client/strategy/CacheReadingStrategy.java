@@ -33,16 +33,6 @@ public class CacheReadingStrategy extends Strategy {
         this.cacheStrategy = new CacheStrategy(cache);
     }
 
-    /**
-     This method serves as normal method for client to read a certain file from server
-     This method utilizes cache. The method will first try to check whether the cache contains
-     the file, then only fetch the file from server if the particular file is not available in
-     the client local cache
-     Parameter used:
-     filename    = Name of the file to be read
-     offset      = offset byte from the beginning of the file
-     length      = length of byte that will be read from the file
-     */
 
     /**
      * This method serves as normal method for client to
