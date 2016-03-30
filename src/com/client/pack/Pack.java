@@ -1,6 +1,6 @@
 package com.client.pack;
 
-import com.sun.tools.javac.util.Assert;
+//import com.sun.tools.javac.util.Assert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class Pack {
      * @return The correspond object based on the string
      */
     public Object getValue(String property) {
-        Assert.check(values.containsKey(property), "No Such Property Existed! ");
+//        Assert.check(values.containsKey(property), "No Such Property Existed! ");
         return values.get(property);
     }
 
@@ -230,7 +230,7 @@ public class Pack {
         }
 
         private Builder set(String property, Object value) {
-            Assert.check(!pack.values.containsKey(property), "Property already existed!");
+//            Assert.check(!pack.values.containsKey(property), "Property already existed!");
             pack.setValue(property, value);
             return this;
         }
