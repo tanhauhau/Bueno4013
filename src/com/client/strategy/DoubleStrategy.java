@@ -36,7 +36,7 @@ public class DoubleStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Filename");
+        String filename = scanner.askForString("Name of the file:");
         long messageId = client.getMessageId();
         Pack request = new Pack.Builder()
                 .setValue("request", new OneByteInt(Client.DOUBLE_REQUEST))
@@ -57,6 +57,6 @@ public class DoubleStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "Non-idempotent, double the excitement!";
+        return "Duplicate the file content (Non-idempotent method)";
     }
 }

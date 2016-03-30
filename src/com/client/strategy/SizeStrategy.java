@@ -72,7 +72,7 @@ public class SizeStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Name of the file");
+        String filename = scanner.askForString("Name of the file:");
 
         long size = getFileSize(client, filename);
         if (size == -1) {

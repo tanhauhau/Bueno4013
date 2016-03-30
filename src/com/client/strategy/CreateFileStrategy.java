@@ -39,7 +39,7 @@ public class CreateFileStrategy extends Strategy {
 
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Filename:");
+        String filename = scanner.askForString("Name of the file:");
 
         long messageId = client.getMessageId();
         Pack request = new Pack.Builder()

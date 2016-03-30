@@ -59,23 +59,22 @@ public class CacheReadingStrategy extends Strategy {
 
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Name of that porn");
-        int offset = scanner.askForInteger("Episode Number");
-        int length = scanner.askForInteger("Number of episodes to watch");
+        Console.println("Description: This function will check for cache before issuing a read request to the server.");
+        String filename = scanner.askForString("Name of the file:");
+        int offset = scanner.askForInteger("Offset:");
+        int length = scanner.askForInteger("Length:");
 
         Console.info("  CacheReadingStrategy >> Loading cache");
         if (this.cacheStrategy.loadCache(client, filename)) {
-
             String data = cache.readFromCache(filename, offset, length);
-
             Console.println(String.format("  CacheReadingStrategy >> Data: '%s'", data));
         } else {
-            Console.println("  CacheReadingStrategy >> Server Error");
+            Console.println("  CacheReadingStrategy >> Failed");
         }
     }
 
     @Override
     public String getTitle() {
-        return "Watch Porn Hub (Cache)";
+        return "Read file (cache)";
     }
 }

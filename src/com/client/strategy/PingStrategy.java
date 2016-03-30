@@ -36,7 +36,7 @@ public class PingStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String message = scanner.askForString("Ping what?");
+        String message = scanner.askForString("Ping content:");
         long messageId = client.getMessageId();
         Pack ping = new Pack.Builder()
                 .setValue("request", new OneByteInt(Client.PING_REQUEST))
@@ -64,6 +64,6 @@ public class PingStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "Ping Server";
+        return "Ping to server";
     }
 }

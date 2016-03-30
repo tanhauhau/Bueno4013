@@ -67,7 +67,7 @@ public class LastModifiedStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Name of that file");
+        String filename = scanner.askForString("Name of the file:");
         long time = lastUpdate(client, filename);
         if (time == -1) {
             Console.println("  LastModifiedStrategy >> Server error occured");
@@ -79,6 +79,6 @@ public class LastModifiedStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "The last time you modified the file";
+        return "Get the last modified time of the file";
     }
 }

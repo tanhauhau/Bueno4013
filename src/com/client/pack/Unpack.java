@@ -1,7 +1,5 @@
 package com.client.pack;
 
-import com.sun.tools.javac.util.Assert;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +33,7 @@ public class Unpack {
     public Unpack include(Unpack unpack) {
         if (unpack != null) {
             for (String prop : unpack.properties) {
-                Assert.check(!this.properties.contains(prop), String.format("Property %s already existed!!", prop));
+//                Assert.check(!this.properties.contains(prop), String.format("Property %s already existed!!", prop));
             }
             this.properties.addAll(unpack.properties);
             this.values.putAll(unpack.values);
@@ -224,7 +222,7 @@ public class Unpack {
         }
 
         public Builder setType(String property, TYPE type) {
-            Assert.check(!pack.values.containsKey(property), "Property already existed!");
+//            Assert.check(!pack.values.containsKey(property), "Property already existed!");
             pack.properties.add(property);
             pack.values.put(property, type);
             return this;

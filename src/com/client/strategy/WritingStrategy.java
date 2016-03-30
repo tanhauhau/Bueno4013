@@ -36,9 +36,9 @@ public class WritingStrategy extends Strategy {
 
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Writing into which file?");
-        int offset = scanner.askForInteger("Starting from where");
-        String content = scanner.askForString("Content");
+        String filename = scanner.askForString("Name of the file:");
+        int offset = scanner.askForInteger("Offset:");
+        String content = scanner.askForString("Data:");
 
         long messageId = client.getMessageId();
         Pack request = new Pack.Builder()
@@ -62,6 +62,6 @@ public class WritingStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "Write into a file without cache";
+        return "Write data into the file (no cache)";
     }
 }

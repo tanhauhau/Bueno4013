@@ -5,7 +5,6 @@ import com.client.pack.Pack;
 import com.client.socket.*;
 import com.client.socket.Socket;
 import com.client.strategy.Strategy;
-import com.sun.tools.javac.util.Assert;
 
 import java.io.IOException;
 import java.net.*;
@@ -137,7 +136,7 @@ public class Client {
      * Stop the socket connection
      */
     public void stop() {
-        Assert.checkNonNull(mSocket, "Socket hasn't instantiated!!");
+//        Assert.checkNonNull(mSocket, "Socket hasn't instantiated!!");
         mSocket.close();
     }
 
