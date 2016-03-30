@@ -176,7 +176,7 @@ public class Pack {
         buffer[index ++] = (byte)((l >> 24) & 0xFF);    /* byte 3 */
         buffer[index ++] = (byte)((l >> 16) & 0xFF);    /* byte 2 */
         buffer[index ++] = (byte)((l >>  8) & 0xFF);    /* byte 1 */
-        buffer[index ++] = (byte)((l >>  0) & 0xFF);    /* byte 0 */
+        buffer[index ++] = (byte)((l) & 0xFF);    /* byte 0 */
         return index;
     }
 
@@ -239,7 +239,7 @@ public class Pack {
             return set(property, value);
         }
         private Builder set(String property, Object value){
-            Assert.check(!pack.values.containsKey(property), "Property already existed!!!");
+            Assert.check(!pack.values.containsKey(property), "You have set this property.");
             pack.setValue(property, value);
             return this;
         }
