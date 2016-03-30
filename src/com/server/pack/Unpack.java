@@ -173,7 +173,7 @@ public class Unpack {
                     ((data[offset ++] & 0xFFL) << 24) |
                     ((data[offset ++] & 0xFFL) << 16) |
                     ((data[offset ++] & 0xFFL) <<  8) |
-                    ((data[offset ++] & 0xFFL) <<  0) ;
+                    ((data[offset ++] & 0xFFL)) ;
         }catch (IndexOutOfBoundsException e){
             return null;
         }
@@ -213,7 +213,7 @@ public class Unpack {
             pack = new Unpack();
         }
         public Builder setType(String property, TYPE type){
-            Assert.check(!pack.values.containsKey(property), "You already have this property dy lah, you mother fucker..");
+            Assert.check(!pack.values.containsKey(property), "You have already set this property.");
             pack.properties.add(property);
             pack.values.put(property, type);
             return this;
