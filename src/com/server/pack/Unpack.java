@@ -35,9 +35,6 @@ public class Unpack {
      */
     public Unpack include(Unpack unpack){
         if (unpack != null) {
-            for (String prop : unpack.properties) {
-//                Assert.check(!this.properties.contains(prop), String.format("You already have this property %s ley, you mother fucker", prop));
-            }
             this.properties.addAll(unpack.properties);
             this.values.putAll(unpack.values);
         }
@@ -211,7 +208,6 @@ public class Unpack {
             pack = new Unpack();
         }
         public Builder setType(String property, TYPE type){
-//            Assert.check(!pack.values.containsKey(property), "You already have this property dy lah, you mother fucker..");
             pack.properties.add(property);
             pack.values.put(property, type);
             return this;
