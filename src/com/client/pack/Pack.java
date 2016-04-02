@@ -228,7 +228,6 @@ public class Pack {
         }
 
         private Builder set(String property, Object value) {
-//            Assert.check(!pack.values.containsKey(property), "Property already existed!");
             pack.setValue(property, value);
             return this;
         }

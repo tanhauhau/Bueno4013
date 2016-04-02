@@ -136,7 +136,6 @@ public class Client {
      * Stop the socket connection
      */
     public void stop() {
-//        Assert.checkNonNull(mSocket, "Socket hasn't instantiated!!");
         mSocket.close();
     }
 

@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public abstract class Cache {
     private final int freshness;
-    private final LastModifiedStrategy lastModifiedFucker;
+    private final LastModifiedStrategy lastModifiedStrategy;
 
     final HashMap<String, Record> cacheTable;
 
@@ -28,7 +28,7 @@ public abstract class Cache {
 
     public Cache(int freshness) {
         this.freshness = freshness;
-        this.lastModifiedFucker = new LastModifiedStrategy();
+        this.lastModifiedStrategy = new LastModifiedStrategy();
         this.cacheTable = new HashMap<>();
     }
 
@@ -54,7 +54,7 @@ public abstract class Cache {
                 return true;
             } else {
                 //2.2. cache is sour
-                long lastModified = this.lastModifiedFucker.lastUpdate(client, filename);
+                long lastModified = this.lastModifiedStrategy.lastUpdate(client, filename);
                 if (cacheRecord.isInvalid(lastModified)) {
                     System.out.println(String.format("   FileCache >> cache record is invalid, cache version: %s, server last modified: %s", new Date(cacheRecord.lastValidated).toString(), new Date(lastModified).toString()));
                     return false;
