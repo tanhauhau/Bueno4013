@@ -38,9 +38,9 @@ public class ReadingStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Name of that porn");
-        int offset = scanner.askForInteger("Episode Number");
-        int length = scanner.askForInteger("Number of episodes to watch");
+        String filename = scanner.askForString("Name of the file:");
+        int offset = scanner.askForInteger("Offset:");
+        int length = scanner.askForInteger("Length:");
 
         long messageId = client.getMessageId();
 
@@ -65,6 +65,6 @@ public class ReadingStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "Read a file from server without cache";
+        return "Read a file from server (no cache)";
     }
 }

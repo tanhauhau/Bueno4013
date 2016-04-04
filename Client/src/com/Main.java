@@ -51,13 +51,13 @@ public class Main {
                 client.makeItLag(ns.getInt("lag"));
             }
             if (ns.getDouble("gibberish") > 0) {
-                client.makeItSendGibberish(1 - Math.max(1, ns.getDouble("gibberish")));
+                client.makeItSendGibberish(1 - Math.min(1, ns.getDouble("gibberish")));
             }
             if (ns.getDouble("send") > 0) {
-                client.makeItPacketLossWhenSending(1 - Math.max(1, ns.getDouble("send")));
+                client.makeItPacketLossWhenSending(1 - Math.min(1, ns.getDouble("send")));
             }
-            if (ns.getDouble("send") > 0) {
-                client.makeItPacketLossWhenReceiving(1 - Math.max(1, ns.getDouble("receive")));
+            if (ns.getDouble("receive") > 0) {
+                client.makeItPacketLossWhenReceiving(1 - Math.min(1, ns.getDouble("receive")));
             }
             while (true) {
                 int option = printMenu(console, client);
@@ -71,7 +71,7 @@ public class Main {
             }
 
         } catch (Exception e) {
-            Console.info("Fuck why got error!!! CiBaI");
+            Console.info("Hey why there is an error?!");
             e.printStackTrace();
         } finally {
             if (client != null) {
@@ -83,7 +83,7 @@ public class Main {
     private static int printMenu(Console scanner, Client client) {
         int option = -1;
         while (option <= 0 || option > 99) {
-            Console.println("=== This is the main menu of Bobo ===");
+            Console.println("=== This is the main menu of Services ===");
             Console.println("Choose any of the following option");
             client.printMenu();
             Console.println("99. Exit");
@@ -138,6 +138,7 @@ public class Main {
         parser.addArgument("-i", "--info")
                 .type(Boolean.class)
                 .required(false)
+                .setDefault(false)
                 .help("Show debug message");
         try {
             return parser.parseArgs(args);

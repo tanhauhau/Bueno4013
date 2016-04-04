@@ -47,6 +47,6 @@ public class CacheDetailStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "List of Cache";
+        return "List Cached Files";
     }
 }

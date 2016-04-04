@@ -59,8 +59,9 @@ public class RegisterStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Callback for which file?");
-        int timeout = scanner.askForInteger("Durations(seconds)?");
+        Console.println("Observe for file changes. Within the specified time period, any changes made to the file by other clients will be notified.");
+        String filename = scanner.askForString("Name of the file");
+        int timeout = scanner.askForInteger("Durations(seconds):");
 
         long requestID = client.getMessageId();
         Pack request = new Pack.Builder()
@@ -116,6 +117,6 @@ public class RegisterStrategy extends Strategy {
 
     @Override
     public String getTitle() {
-        return "Register for File Callback";
+        return "Register for File Changes";
     }
 }

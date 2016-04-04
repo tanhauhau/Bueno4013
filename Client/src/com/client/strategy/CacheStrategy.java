@@ -80,12 +80,12 @@ public class CacheStrategy extends Strategy {
      */
     @Override
     public void serviceUser(Console scanner, Client client) throws IOException {
-        String filename = scanner.askForString("Name of that file");
+        String filename = scanner.askForString("Name of the file:");
         loadCache(client, filename);
     }
 
     @Override
     public String getTitle() {
-        return "Cache file into Client side";
+        return "Cache the file";
     }
 }
