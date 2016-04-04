@@ -42,9 +42,9 @@ public class Callback {
      */
     public void register(String filename, int interval, long id, InetAddress address, int port){
         long expiry = System.currentTimeMillis() + interval * 1000;
-        Busybody busybody = new Busybody(address, port, id, expiry);            /* Initialize the busybody object */
-        if (!aGroupOfBusybodies.containsKey(filename)){                         /* If the files is not being monitored before*/
-            aGroupOfBusybodies.put(filename, new ArrayList<Busybody>());        /* Initialize an arraylist for clients who wish to monitor */
+        Busybody busybody = new Busybody(address, port, id, expiry);                                    /* Initialize the busybody object */
+        if (!aGroupOfBusybodies.containsKey(filename)){                                                 /* If the files is not being monitored before*/
+            aGroupOfBusybodies.put(filename, new ArrayList<Busybody>());                                /* Initialize an arraylist for clients who wish to monitor */
         }
         ArrayList<Busybody> busybodies = aGroupOfBusybodies.get(filename);
         busybodies.add(busybody);
@@ -67,7 +67,7 @@ public class Callback {
             ArrayList<Busybody> expired = new ArrayList<>();
             for (Busybody busybody : busybodies){
                 if (busybody.isExpired(currentTime)){
-                    expired.add(busybody);                  /* Add the expired callback into the expired list */
+                    expired.add(busybody);                     /* Add the expired callback into the expired list */
                 }else{
                     System.out.println(String.format("   Callback >> inform %s(%d)", busybody.getAddress().toString(), busybody.getPort()));
                     byte[] message = new Pack.Builder()
