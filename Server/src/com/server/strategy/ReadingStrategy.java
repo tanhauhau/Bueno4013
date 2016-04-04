@@ -53,7 +53,7 @@ public class ReadingStrategy extends Strategy {
             return replyError(request.getRequestID(), "Corrupted data");        /* Return error message if any of the parameters is NULL */
 
         File file = new File(folder, filename);
-        if (!file.exists()){
+        if (!file.exists() || !file.isFile()){
             return replyError(request.getRequestID(), "No such file");          /* Return error messages if the file asked doesn't exist */
         }else{
             long fileByteSize = file.length();                                  /* Acquire size of the file */

@@ -52,7 +52,7 @@ public class DoubleStrategy extends Strategy {
             return replyError(request.getRequestID(), "Corrupted data");        /* Return error message if the filename is NULL */
 
         File file = new File(folder, filename);
-        if (!file.exists()){
+        if (!file.exists() || !file.isFile()){
             return replyError(request.getRequestID(), "No such file");          /* Return error message if the file doesn't exist */
         }else{
             Path path = Paths.get(folder, filename);

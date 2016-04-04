@@ -55,7 +55,7 @@ public class RegisterStrategy extends Strategy {
             return replyError(request.getRequestID(), "Corrupted data");    /* Return error message if the filename or interval is NULL */
 
         File file = new File(folder, filename);
-        if (!file.exists()){
+        if (!file.exists() || !file.isFile()){
             return replyError(request.getRequestID(), "No such file");      /* Return error message if the file asked doesn't exist */
         }else{
             callback.register(filename, interval, request.getRequestID(), request.getAddress(), request.getPort());     /* Return Success message after callback is registered */

@@ -1,7 +1,5 @@
 package com.server.pack;
 
-import com.sun.tools.javac.util.Assert;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,9 +30,6 @@ public class Pack {
      */
     public Pack include(Pack pack){
         if (pack != null) {
-            for (String prop : pack.properties) {
-                Assert.check(!this.properties.contains(prop), String.format("Property already existed!", prop));
-            }
             this.properties.addAll(pack.properties);
             this.values.putAll(pack.values);
         }
@@ -47,7 +42,6 @@ public class Pack {
      * @return  The correspond object based on the string
      */
     public Object getValue(String property){
-        Assert.check(values.containsKey(property), "Property doesn't exist!!");
         return values.get(property);
     }
 
@@ -239,7 +233,6 @@ public class Pack {
             return set(property, value);
         }
         private Builder set(String property, Object value){
-            Assert.check(!pack.values.containsKey(property), "You have set this property.");
             pack.setValue(property, value);
             return this;
         }
