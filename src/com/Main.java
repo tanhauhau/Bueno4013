@@ -71,7 +71,7 @@ public class Main {
             }
 
         } catch (Exception e) {
-            Console.info("Fuck why got error!!! CiBaI");
+            Console.info("Hey why there is an error?!");
             e.printStackTrace();
         } finally {
             if (client != null) {
@@ -83,7 +83,7 @@ public class Main {
     private static int printMenu(Console scanner, Client client) {
         int option = -1;
         while (option <= 0 || option > 99) {
-            Console.println("=== This is the main menu of Bobo ===");
+            Console.println("=== This is the main menu of Services ===");
             Console.println("Choose any of the following option");
             client.printMenu();
             Console.println("99. Exit");

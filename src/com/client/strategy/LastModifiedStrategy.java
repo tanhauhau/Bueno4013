@@ -24,9 +24,6 @@ public class LastModifiedStrategy extends Strategy {
                 .setType(TIME, Unpack.TYPE.LONG)
                 .build());
     }
-    /*
-
-     */
 
     /**
      * This is an example of idempotent request

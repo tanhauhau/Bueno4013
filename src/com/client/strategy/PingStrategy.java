@@ -45,14 +45,6 @@ public class PingStrategy extends Strategy {
                 .build();
         client.send(ping);
 
-        /*
-        DatagramPacket packet = client.receive();
-        Unpack.Result result = unpack(packet.getData());
-        if (isStatusOK(result)){
-            System.out.println(String.format("Received : %s", result.getString(DATA)));
-        }
-        */
-
         Unpack.Result result = keepTryingUntilReceive(client, ping, messageId);
         if (isStatusOK(result)) {
             Console.println(String.format("Received : %s", result.getString(DATA)));

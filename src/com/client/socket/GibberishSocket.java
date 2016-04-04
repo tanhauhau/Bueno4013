@@ -57,12 +57,6 @@ public class GibberishSocket extends WrapperSocket {
         super.send(p);
     }
 
-//    @Override
-//    public void receive(DatagramPacket p) throws IOException {
-//        super.receive(p);
-//        if (isSoUnlucky()) fillRubbish(p.getData());
-//    }
-
     /**
      * Pack the byte array with random data
      *

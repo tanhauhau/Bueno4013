@@ -20,11 +20,6 @@ public class DoubleStrategy extends Strategy {
         super(null);
     }
 
-    /*
-        This is an example of non-idempotent request
-
-     */
-
     /**
      * When client select this options towards a certain file
      * the server will duplicate the entire content of the file,
